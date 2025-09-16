@@ -1,0 +1,29 @@
+.dashboard-container {
+  padding: 16px;          /* margem interna do container */
+  max-width: 1200px;      /* opcional: limita largura máxima */
+  margin: 0 auto;         /* centraliza horizontalmente */
+}
+
+.dashboard-header {
+  margin-bottom: 24px;    /* espaço entre título e cards */
+}
+
+.dashboard-title {
+  font-size: 2rem;        /* equivalente a text-3xl */
+  font-weight: 700;
+  margin: 0;
+  padding: 16px 0px 16px 0px;
+}
+
+.dashboard-subtitle {
+  color: rgba(0,0,0,0.6);
+  margin: 4px 0 0 0;
+  font-size: 1rem;
+}
+
+.cards-container {
+  display: flex;
+  flex-wrap: wrap;        /* responsivo: quebra linha em telas pequenas */
+  gap: 24px;              /* espaço entre os cards */
+  justify-content: flex-start; /* alinha à esquerda, mesmo ponto que o título */
+}

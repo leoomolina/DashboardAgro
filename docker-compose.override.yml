@@ -1,0 +1,52 @@
+version: '3.9'
+
+services:
+  api:
+    build:
+      context: ./DashboardAgro.API
+      dockerfile: Dockerfile
+    environment:
+      ConnectionStrings__Default: "Server=${SQL_SERVER};Database=${SQL_DB};User Id=${SQL_USER};Password=${SA_PASSWORD};TrustServerCertificate=True;"
+      BigQuery__ProjectId: ${BIGQUERY_PROJECT}
+      GOOGLE_APPLICATION_CREDENTIALS: "/app/keys/sa-key.json"
+    ports:
+      - "${API_PORT}:5000"
+    depends_on:
+      - sqlserver
+
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sqlserver_agro
+    environment:
+      SA_PASSWORD: ${SA_PASSWORD}
+      ACCEPT_EULA: "Y"
+    ports:
+      - "${SQL_PORT}:1433"
+    volumes:
+      - sql_data:/var/opt/mssql
+      # - ./sqlserver/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  importer-service:
+    build:
+      context: ./DashboardAgro.Importer
+      dockerfile: Dockerfile
+    environment:
+      ConnectionStrings__Default: "Server=${SQL_SERVER};Database=${SQL_DB};User Id=${SQL_USER};Password=${SA_PASSWORD};TrustServerCertificate=True;"
+      BigQuery__ProjectId: ${BIGQUERY_PROJECT}
+      GOOGLE_APPLICATION_CREDENTIALS: "/app/keys/sa-key.json"
+    volumes:
+      - ./keys:/app/keys:ro
+    depends_on:
+      - api
+
+  dashboard-web:
+    build: 
+      context: ./DashboardAgro.Web
+      dockerfile: Dockerfile
+    ports:
+      - "4200:80"
+    depends_on:
+      - api
+
+volumes:
+  sql_data:

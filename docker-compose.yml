@@ -1,0 +1,6 @@
+services:
+  dashboardagro.api:
+    image: ${DOCKER_REGISTRY-}dashboardagroapi
+    build:
+      context: .
+      dockerfile: DashboardAgro.API/Dockerfile

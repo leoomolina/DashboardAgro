@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "DashboardAgro.Importer": {
+      "commandName": "Project"
+    },
+    "Container (Dockerfile)": {
+      "commandName": "Docker"
+    }
+  }
+}
