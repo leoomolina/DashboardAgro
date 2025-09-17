@@ -4,7 +4,7 @@ namespace DashboardAgro.Domain.Entities
 {
     public class Lavoura
     {
-        public long Ano { get; set; }
+        public int Ano { get; set; }
         public int IdRegiao { get; set; }
         public string SiglaUF { get; set; }
         public string NomeUF { get; set; }

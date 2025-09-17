@@ -21,9 +21,9 @@ namespace DashboardAgro.Infraestructure.Migrations
                     DataInicio = table.Column<DateTime>(type: "datetime2", nullable: true),
                     DataFim = table.Column<DateTime>(type: "datetime2", nullable: true),
                     StatusImportacao = table.Column<int>(type: "int", nullable: false),
+                    ImportedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     QuantidadeRegistros = table.Column<int>(type: "int", nullable: false),
-                    DescricaoStatusImportacao = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ImportedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    DescricaoStatusImportacao = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -89,7 +89,7 @@ namespace DashboardAgro.Infraestructure.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     AreaDestinadaColheita = table.Column<long>(type: "bigint", nullable: false),
                     ImportedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Ano = table.Column<long>(type: "bigint", nullable: false),
+                    Ano = table.Column<int>(type: "int", nullable: false),
                     AreaColhida = table.Column<long>(type: "bigint", nullable: false),
                     QuantidadeProduzida = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     RendimentoMedioProducao = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
@@ -123,7 +123,7 @@ namespace DashboardAgro.Infraestructure.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     AreaPlantada = table.Column<long>(type: "bigint", nullable: false),
                     ImportedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Ano = table.Column<long>(type: "bigint", nullable: false),
+                    Ano = table.Column<int>(type: "int", nullable: false),
                     AreaColhida = table.Column<long>(type: "bigint", nullable: false),
                     QuantidadeProduzida = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     RendimentoMedioProducao = table.Column<decimal>(type: "decimal(18,2)", nullable: false),

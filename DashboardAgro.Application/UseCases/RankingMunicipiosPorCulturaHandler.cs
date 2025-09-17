@@ -1,5 +1,4 @@
 ﻿using DashboardAgro.Domain.Contracts;
-using DashboardAgro.Domain.Entities;
 
 namespace DashboardAgro.Application.Interfaces
 {

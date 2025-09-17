@@ -1,4 +1,4 @@
-﻿using DashboardAgro.Application.CaseUses;
+﻿using DashboardAgro.Application.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace DashboardAgro.Infraestructure.Repositories

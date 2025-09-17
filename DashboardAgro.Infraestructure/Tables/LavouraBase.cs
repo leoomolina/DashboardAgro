@@ -4,7 +4,7 @@ namespace DashboardAgro.Infraestructure.Tables
 {
     public abstract class LavouraBase : TableBase
     {
-        public long Ano { get; set; }
+        public int Ano { get; set; }
         public long AreaColhida { get; set; }
         public decimal QuantidadeProduzida { get; set; }
         public decimal RendimentoMedioProducao { get; set; }

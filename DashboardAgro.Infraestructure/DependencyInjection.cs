@@ -1,5 +1,8 @@
-﻿using DashboardAgro.Application.CaseUses;
+﻿using DashboardAgro.Application.Interfaces;
+using DashboardAgro.Application.UseCases;
+using DashboardAgro.Domain.Contracts;
 using DashboardAgro.Infraestructure.Repositories;
+using DashboardAgro.Infraestructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,6 +19,15 @@ namespace DashboardAgro.Infraestructure
 
             // registra os repositórios
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+
+            services.AddScoped<IBigQueryService>(sp =>
+            {
+                var projectId = configuration["BigQuery:ProjectId"];
+                return new BigQueryService(projectId);
+            });
+
+            services.AddScoped<IImportarDados, ImportarDadosBigQuery>();
+            services.AddScoped<ImportarDadosBigQueryHandler>();
 
             return services;
         }

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DashboardAgro.Infraestructure.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20250916171336_InitialCreate")]
+    [Migration("20250916213655_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -25,7 +25,7 @@ namespace DashboardAgro.Infraestructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("DashboardAgro.Infraestructure.Tables.ControleImportacaoTable", b =>
+            modelBuilder.Entity("DashboardAgro.Domain.Entities.ControleImportacao", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -67,8 +67,8 @@ namespace DashboardAgro.Infraestructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<long>("Ano")
-                        .HasColumnType("bigint");
+                    b.Property<int>("Ano")
+                        .HasColumnType("int");
 
                     b.Property<long>("AreaColhida")
                         .HasColumnType("bigint");
@@ -114,8 +114,8 @@ namespace DashboardAgro.Infraestructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<long>("Ano")
-                        .HasColumnType("bigint");
+                    b.Property<int>("Ano")
+                        .HasColumnType("int");
 
                     b.Property<long>("AreaColhida")
                         .HasColumnType("bigint");

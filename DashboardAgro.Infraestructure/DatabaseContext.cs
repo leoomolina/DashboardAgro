@@ -1,4 +1,5 @@
-﻿using DashboardAgro.Infraestructure.Tables;
+﻿using DashboardAgro.Domain.Entities;
+using DashboardAgro.Infraestructure.Tables;
 using Microsoft.EntityFrameworkCore;
 
 namespace DashboardAgro.Infraestructure
@@ -10,7 +11,7 @@ namespace DashboardAgro.Infraestructure
         {
         }
 
-        public DbSet<ControleImportacaoTable> ControleImportacaoTable { get; set; }
+        public DbSet<ControleImportacao> ControleImportacaoTable { get; set; }
         public DbSet<DadosLavouraPermanenteTable> DadosLavouraPermanente { get; set; }
         public DbSet<DadosLavouraTemporariaTable> DadosLavouraTemporaria { get; set; }
         public DbSet<RegiaoTable> Municipio { get; set; }
@@ -19,7 +20,7 @@ namespace DashboardAgro.Infraestructure
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<ControleImportacaoTable>(table =>
+            modelBuilder.Entity<ControleImportacao>(table =>
             {
                 table.ToTable("ControleImportacao");
                 table.HasKey(e => e.Id );

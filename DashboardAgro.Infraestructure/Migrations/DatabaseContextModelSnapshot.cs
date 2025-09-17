@@ -22,7 +22,7 @@ namespace DashboardAgro.Infraestructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("DashboardAgro.Infraestructure.Tables.ControleImportacaoTable", b =>
+            modelBuilder.Entity("DashboardAgro.Domain.Entities.ControleImportacao", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -64,8 +64,8 @@ namespace DashboardAgro.Infraestructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<long>("Ano")
-                        .HasColumnType("bigint");
+                    b.Property<int>("Ano")
+                        .HasColumnType("int");
 
                     b.Property<long>("AreaColhida")
                         .HasColumnType("bigint");
@@ -111,8 +111,8 @@ namespace DashboardAgro.Infraestructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<long>("Ano")
-                        .HasColumnType("bigint");
+                    b.Property<int>("Ano")
+                        .HasColumnType("int");
 
                     b.Property<long>("AreaColhida")
                         .HasColumnType("bigint");
