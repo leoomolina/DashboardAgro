@@ -15,7 +15,6 @@ class Program
         var services = new ServiceCollection();
         services.AddInfrastructureServices(configuration);
 
-
         var provider = services.BuildServiceProvider();
 
         DatabaseInitializer.MigrateDatabase(provider);
