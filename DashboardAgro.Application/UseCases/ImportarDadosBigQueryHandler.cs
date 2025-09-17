@@ -2,7 +2,6 @@
 using DashboardAgro.Domain.Contracts;
 using DashboardAgro.Domain.Entities;
 using DashboardAgro.Domain.Enums;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace DashboardAgro.Application.UseCases
 {
@@ -38,7 +37,7 @@ namespace DashboardAgro.Application.UseCases
                 novosDadosImportar.Add(ano, controleImportacao);
             }
 
-            await _importarDadosBigQuery.ImportarAnosAsync(novosDadosImportar);
+            await ImportarCarga(novosDadosImportar);
 
             Console.WriteLine("Carga inicial concluída!");
         }
@@ -71,8 +70,44 @@ namespace DashboardAgro.Application.UseCases
                 }
             };
 
-            await _importarDadosBigQuery.ImportarAnosAsync(anos);
+            await ImportarCarga(anos);
+
             Console.WriteLine("Carga incremental concluída!");
+        }
+
+        private async Task ImportarCarga(Dictionary<int, ControleImportacao> anos)
+        {
+            await _importarDadosBigQuery.ImportarAnosAsync(anos);
+            await ExecutarImportacoesPendentesAsync();
+        }
+
+        private async Task ExecutarImportacoesPendentesAsync()
+        {
+            List<ControleImportacao> importacoesPendentes = _importarDadosBigQuery.GetImportacoesPendentes();
+
+            if (importacoesPendentes.Count > 0)
+            {
+                foreach (ControleImportacao importacao in importacoesPendentes)
+                {
+                    var unidadesFederativasBigQuery = _bigQuery.ObterUnidadesFederativas(importacao.Ano);
+                    var unidadesFederativas = new Dictionary<string, UnidadeFederativa>();
+
+                    foreach (var item in unidadesFederativasBigQuery)
+                    {
+                        var uf = new UnidadeFederativa
+                        {
+                            NomeUF = item.NomeUF,
+                            SiglaUF = item.SiglaUF,
+                        };
+
+                        unidadesFederativas.Add(item.SiglaUF, item);
+                    }
+
+                     int qtdImportada = await _importarDadosBigQuery.ImportarUnidadesFederativasAsync(unidadesFederativas);
+
+                    Console.WriteLine($"Importação unidades federais importadas com sucesso! Quantidade: {qtdImportada}");
+                }
+            }
         }
     }
 }

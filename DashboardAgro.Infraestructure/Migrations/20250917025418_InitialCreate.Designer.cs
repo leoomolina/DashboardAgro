@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DashboardAgro.Infraestructure.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20250916213655_InitialCreate")]
+    [Migration("20250917025418_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -193,7 +193,7 @@ namespace DashboardAgro.Infraestructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Municipio");
+                    b.ToTable("Regiao", (string)null);
                 });
 
             modelBuilder.Entity("DashboardAgro.Infraestructure.Tables.UFTable", b =>

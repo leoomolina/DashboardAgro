@@ -34,7 +34,6 @@
 //        var anosExistentes = await controleRepo.Query().OfType<ControleImportacaoTable>().AsNoTracking().ToListAsync();
 //        var producoesExistentes = await producaoRepo.Query().OfType<ProducaoTable>().AsNoTracking().ToListAsync();
 
-//        var ufDict = ufsExistentes.ToDictionary(u => u.SiglaUF, u => u);
 //        var anosDict = anosExistentes.ToDictionary(m => m.Ano, m => m);
 //        var producaoDict = producoesExistentes.ToDictionary(p => p.Descricao, p => p);
 
@@ -104,6 +103,7 @@
 //        // ## Importar UFs ##
 
 //        var novosUFs = new List<UFTable>();
+//        var ufDict = ufsExistentes.ToDictionary(u => u.SiglaUF, u => u);
 
 //        foreach (var row in client.ExecuteQuery(queryLocalizacao, parameters: null))
 //        {

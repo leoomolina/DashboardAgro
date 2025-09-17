@@ -31,20 +31,6 @@ namespace DashboardAgro.Infraestructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Municipio",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Descricao = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ImportedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Municipio", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Producao",
                 columns: table => new
                 {
@@ -57,6 +43,20 @@ namespace DashboardAgro.Infraestructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Producao", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Regiao",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Descricao = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ImportedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Regiao", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -74,9 +74,9 @@ namespace DashboardAgro.Infraestructure.Migrations
                 {
                     table.PrimaryKey("PK_UnidadeFederativa", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_UnidadeFederativa_Municipio_IdRegiao",
+                        name: "FK_UnidadeFederativa_Regiao_IdRegiao",
                         column: x => x.IdRegiao,
-                        principalTable: "Municipio",
+                        principalTable: "Regiao",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -194,7 +194,7 @@ namespace DashboardAgro.Infraestructure.Migrations
                 name: "UnidadeFederativa");
 
             migrationBuilder.DropTable(
-                name: "Municipio");
+                name: "Regiao");
         }
     }
 }

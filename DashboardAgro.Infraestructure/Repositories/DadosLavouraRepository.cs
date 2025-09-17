@@ -46,7 +46,17 @@ namespace DashboardAgro.Infraestructure.Repositories
             .Select(p => new Lavoura
             {
                 Ano = p.Ano,
-                SiglaUF = p.Uf.SiglaUF,
+                UF = new UnidadeFederativa
+                {
+                    Id = p.Uf.Id,
+                    SiglaUF = p.Uf.SiglaUF,
+                    NomeUF = p.Uf.NomeUF,
+                    Regiao = new Regiao
+                    {
+                        Id = p.Uf.Regiao.Id,
+                        Descricao = p.Uf.Regiao.Descricao
+                    }
+                },
                 Produto = p.Producao.Descricao,
                 AreaColhida = p.AreaColhida,
                 QuantidadeProduzida = p.QuantidadeProduzida,

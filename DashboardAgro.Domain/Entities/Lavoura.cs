@@ -5,10 +5,6 @@ namespace DashboardAgro.Domain.Entities
     public class Lavoura
     {
         public int Ano { get; set; }
-        public int IdRegiao { get; set; }
-        public string SiglaUF { get; set; }
-        public string NomeUF { get; set; }
-        public string DescricaoRegiao { get; set; }
         public string Produto { get; set; }
         public decimal QuantidadeProduzida { get; set; }
         public long AreaColhida { get; set; }
@@ -16,6 +12,7 @@ namespace DashboardAgro.Domain.Entities
         public long AreaPlantada { get; set; }
         public decimal ValorProducao { get; set; }
         public decimal Produtividade => AreaColhida == 0 ? 0 : QuantidadeProduzida / AreaColhida;
+        public UnidadeFederativa UF { get; set; }
         public TipoLavoura Tipo { get; set; }
     }
 }

@@ -1,9 +1,11 @@
-﻿namespace DashboardAgro.Application.Interfaces
+﻿using DashboardAgro.Domain.Entities;
+
+namespace DashboardAgro.Application.Interfaces
 {
     public interface IBigQueryService
     {
-        IEnumerable<object> ExecutarQueryAsync(string sql);
-
+        IEnumerable<UnidadeFederativa> ObterUnidadesFederativas(int ano);
+        IEnumerable<Lavoura> ObterLavouraPermanente(int ano);
         List<int> ObterAnosDisponiveisAsync();
     }
 }

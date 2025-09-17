@@ -14,7 +14,7 @@ namespace DashboardAgro.Infraestructure
         public DbSet<ControleImportacao> ControleImportacaoTable { get; set; }
         public DbSet<DadosLavouraPermanenteTable> DadosLavouraPermanente { get; set; }
         public DbSet<DadosLavouraTemporariaTable> DadosLavouraTemporaria { get; set; }
-        public DbSet<RegiaoTable> Municipio { get; set; }
+        public DbSet<RegiaoTable> Regiao { get; set; }
         public DbSet<ProducaoTable> Producao { get; set; }
         public DbSet<UFTable> UnidadeFederativa { get; set; }
 
@@ -47,6 +47,12 @@ namespace DashboardAgro.Infraestructure
             modelBuilder.Entity<UFTable>(table =>
             {
                 table.ToTable("UnidadeFederativa");
+                table.HasKey(e => e.Id);
+            });
+
+            modelBuilder.Entity<RegiaoTable>(table =>
+            {
+                table.ToTable("Regiao");
                 table.HasKey(e => e.Id);
             });
         }

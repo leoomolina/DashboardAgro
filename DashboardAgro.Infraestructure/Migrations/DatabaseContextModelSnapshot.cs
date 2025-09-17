@@ -190,7 +190,7 @@ namespace DashboardAgro.Infraestructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Municipio");
+                    b.ToTable("Regiao", (string)null);
                 });
 
             modelBuilder.Entity("DashboardAgro.Infraestructure.Tables.UFTable", b =>

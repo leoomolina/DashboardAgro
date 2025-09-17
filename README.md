@@ -54,7 +54,10 @@ A arquitetura segue o modelo de **microsserviços containerizados**:
     - API → ```http://localhost:5000/api/v1/...```
     - Frontend → ```http://localhost:4200```
 
-    ---
+### Rodando Migrations
+    dotnet ef migrations add InitialCreate -p DashboardAgro.Infraestructure -s DashboardAgro.API
+    
+---
 
 ## 📊 Fluxo de Dados
 
