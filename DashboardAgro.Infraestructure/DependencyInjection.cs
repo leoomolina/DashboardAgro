@@ -26,8 +26,9 @@ namespace DashboardAgro.Infraestructure
                 return new BigQueryService(projectId);
             });
 
-            services.AddScoped<IImportarDados, ImportarDadosBigQuery>();
+            services.AddScoped<IImportarDados, ImportaDados>();
             services.AddScoped<ImportarDadosBigQueryHandler>();
+            services.AddScoped<ILavouraRepository, DadosLavouraQueryRepository>();
 
             return services;
         }

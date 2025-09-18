@@ -1,6 +1,6 @@
 @DashboardAgro.API_HostAddress = http://localhost:5133
 
-GET {{DashboardAgro.API_HostAddress}}/weatherforecast/
+GET {{DashboardAgro.API_HostAddress}}/lavoura/
 Accept: application/json
 
 ###

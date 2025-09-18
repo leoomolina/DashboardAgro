@@ -4,9 +4,10 @@ namespace DashboardAgro.Domain.Contracts
 {
     public interface ILavouraRepository
     {
+        Task<IEnumerable<int>> GetAnosDisponiveisAsync();
         Task<IEnumerable<Lavoura>> GetByAnoAsync(int ano);
-        Task<IEnumerable<Lavoura>> GetByCulturaAsync(int ano, int idCultura);
-        Task<decimal> GetProdutividadeMediaAsync(int ano, int idCultura);
-        Task<IEnumerable<(string Municipio, decimal Producao)>> GetTopMunicipiosAsync(int ano, int idCultura, int top = 10);
+        Task<IEnumerable<Lavoura>> GetByCulturaAsync(int ano, int idProducao);
+        Task<decimal> GetProdutividadeMediaAsync(int ano, int idProducao);
+        Task<IEnumerable<(UnidadeFederativa UnidadeFederativa, decimal Producao)>> GetTopUFsAsync(int ano, int idProducao, int top = 10);
     }
 }

@@ -4,14 +4,13 @@ using DashboardAgro.Domain.Enums;
 using DashboardAgro.Domain.ValueObjects;
 using DashboardAgro.Infraestructure.Tables;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
 
 namespace DashboardAgro.Infraestructure.Repositories
 {
-    public class ImportarDadosBigQuery : IImportarDados
+    public class ImportaDados : IImportarDados
     {
         protected readonly DatabaseContext _context;
-        public ImportarDadosBigQuery(DatabaseContext context)
+        public ImportaDados(DatabaseContext context)
         {
             _context = context;
         }

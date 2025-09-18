@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DashboardAgro.Infraestructure.Repositories
 {
-    public class DadosLavouraRepository : ILavouraRepository
+    public class DadosLavouraQueryRepository : ILavouraRepository
     {
         private readonly DatabaseContext _context;
 
-        public DadosLavouraRepository(DatabaseContext context)
+        public DadosLavouraQueryRepository(DatabaseContext context)
         {
             _context = context;
         }
@@ -37,6 +37,13 @@ namespace DashboardAgro.Infraestructure.Repositories
         public Task<IEnumerable<Lavoura>> GetAllAsync()
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<IEnumerable<int>> GetAnosDisponiveisAsync()
+        {
+            return await _context.ControleImportacaoTable
+                .Where(r => r.StatusImportacao == Domain.Enums.StatusImportacaoDados.Concluido)
+                .Select(r => r.Ano).Distinct().ToListAsync();
         }
 
         public async Task<IEnumerable<Lavoura>> GetByAnoAsync(int ano)
@@ -80,7 +87,7 @@ namespace DashboardAgro.Infraestructure.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<(string Municipio, decimal Producao)>> GetTopMunicipiosAsync(int ano, int idCultura, int top = 10)
+        public Task<IEnumerable<(UnidadeFederativa UnidadeFederativa, decimal Producao)>> GetTopUFsAsync(int ano, int idProducao, int top = 10)
         {
             throw new NotImplementedException();
         }
