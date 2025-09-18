@@ -55,7 +55,7 @@ A arquitetura segue o modelo de **microsserviços containerizados**:
     - Frontend → ```http://localhost:4200```
 
 ### Rodando Migrations
-    dotnet ef migrations add InitialCreate -p DashboardAgro.Infraestructure -s DashboardAgro.API
+    dotnet ef migrations add NameMigration -p DashboardAgro.Infraestructure -s DashboardAgro.API
     
 ---
 
@@ -79,16 +79,16 @@ A arquitetura segue o modelo de **microsserviços containerizados**:
 
 ### 🔹 Microsserviço de Ingestão de Dados (DashboardAgro.Importer)
 - [x] Criar microsserviço responsável por ingestão dos dados públicos do IBGE
-- [ ] Implementar ingestão **histórica (1974–2022)** → rodar **uma vez** e importar ano a ano
-- [ ] Implementar rotina de **sincronização do ano corrente (2023 em diante)** → verificar atualização do dataset e importar apenas dados novos
-- [ ] Adicionar logs para acompanhar status da importação (ex.: “ano 1998 importado com sucesso”)
-- [ ] Criar tabela de **controle de status de importação** (ano, status, data de importação)
+- [x] Implementar ingestão **histórica (1974–2022)** → rodar **uma vez** e importar ano a ano
+- [x] Implementar rotina de **sincronização do ano corrente (2023 em diante)** → verificar atualização do dataset e importar apenas dados novos
+- [x] Adicionar logs para acompanhar status da importação
+- [x] Criar tabela de **controle de status de importação** (ano, status, data de importação)
 - [ ] Expor endpoint interno ou sinalização para o front verificar quais anos já foram importados
 
 ---
 
 ### 🔹 REST API (DashboardAgro.API)
-- [ ] Criar microsserviço **ms-api** que expõe dados do SQL Server via **REST API**
+- [x] Criar **DashboardAgro.API** que expõe dados do SQL Server via **REST API**
 - [ ] Implementar endpoints para:
   - [ ] Listar dados agregados (por ano, estado, região)
   - [ ] Buscar detalhes de um ano específico
@@ -111,7 +111,7 @@ A arquitetura segue o modelo de **microsserviços containerizados**:
 
 ### 🔹 DevOps & Deploy
 - [x] Criar **Dockerfile** para cada microsserviço (`DashboardAgro.Importer`, `DashboardAgro.API`, `front-end`)
-- [ ] Criar `docker-compose.yml` para orquestrar **SQL Server + DashboardAgro.Importer + DashboardAgro.API + front**
+- [x] Criar `docker-compose.yml` para orquestrar **SQL Server + DashboardAgro.Importer + DashboardAgro.API + front**
 - [ ] Testar execução local (importação → api → front consumindo)
 - [ ] Publicar imagens no **Docker Hub**
 

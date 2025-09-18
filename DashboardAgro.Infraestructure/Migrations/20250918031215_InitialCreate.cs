@@ -18,11 +18,11 @@ namespace DashboardAgro.Infraestructure.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Ano = table.Column<int>(type: "int", nullable: false),
+                    QuantidadeRegistros = table.Column<int>(type: "int", nullable: false),
                     DataInicio = table.Column<DateTime>(type: "datetime2", nullable: true),
                     DataFim = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    StatusImportacao = table.Column<int>(type: "int", nullable: false),
                     ImportedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    QuantidadeRegistros = table.Column<int>(type: "int", nullable: false),
+                    StatusImportacao = table.Column<int>(type: "int", nullable: false),
                     DescricaoStatusImportacao = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
@@ -95,8 +95,7 @@ namespace DashboardAgro.Infraestructure.Migrations
                     RendimentoMedioProducao = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     ValorProducao = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     IdProducao = table.Column<int>(type: "int", nullable: false),
-                    IdUf = table.Column<int>(type: "int", nullable: false),
-                    IdEstado = table.Column<int>(type: "int", nullable: false)
+                    IdUf = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -108,8 +107,8 @@ namespace DashboardAgro.Infraestructure.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_DadosLavouraPermanente_UnidadeFederativa_IdEstado",
-                        column: x => x.IdEstado,
+                        name: "FK_DadosLavouraPermanente_UnidadeFederativa_IdUf",
+                        column: x => x.IdUf,
                         principalTable: "UnidadeFederativa",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -129,8 +128,7 @@ namespace DashboardAgro.Infraestructure.Migrations
                     RendimentoMedioProducao = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     ValorProducao = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     IdProducao = table.Column<int>(type: "int", nullable: false),
-                    IdUf = table.Column<int>(type: "int", nullable: false),
-                    IdEstado = table.Column<int>(type: "int", nullable: false)
+                    IdUf = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -142,17 +140,12 @@ namespace DashboardAgro.Infraestructure.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_DadosLavouraTemporaria_UnidadeFederativa_IdEstado",
-                        column: x => x.IdEstado,
+                        name: "FK_DadosLavouraTemporaria_UnidadeFederativa_IdUf",
+                        column: x => x.IdUf,
                         principalTable: "UnidadeFederativa",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_DadosLavouraPermanente_IdEstado",
-                table: "DadosLavouraPermanente",
-                column: "IdEstado");
 
             migrationBuilder.CreateIndex(
                 name: "IX_DadosLavouraPermanente_IdProducao",
@@ -160,14 +153,19 @@ namespace DashboardAgro.Infraestructure.Migrations
                 column: "IdProducao");
 
             migrationBuilder.CreateIndex(
-                name: "IX_DadosLavouraTemporaria_IdEstado",
-                table: "DadosLavouraTemporaria",
-                column: "IdEstado");
+                name: "IX_DadosLavouraPermanente_IdUf",
+                table: "DadosLavouraPermanente",
+                column: "IdUf");
 
             migrationBuilder.CreateIndex(
                 name: "IX_DadosLavouraTemporaria_IdProducao",
                 table: "DadosLavouraTemporaria",
                 column: "IdProducao");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DadosLavouraTemporaria_IdUf",
+                table: "DadosLavouraTemporaria",
+                column: "IdUf");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UnidadeFederativa_IdRegiao",

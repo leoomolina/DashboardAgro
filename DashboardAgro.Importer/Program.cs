@@ -23,7 +23,18 @@ class Program
 
         if (args.Contains("--full"))
             await importador.ExecutarCargaInicial();
+        else if (args.Contains("--anoInicial"))
+        {
+            int index = Array.IndexOf(args, "--anoInicial");
+            if (index >= 0 && index < args.Length - 1 && int.TryParse(args[index + 1], out int ano))
+            {
+                await importador.ExecutarCargaIncremental(ano);
+            }
+        }
         else
-            await importador.ExecutarCargaIncremental();
+        {
+            await importador.ExecutarCargaIncremental(2022);
+        }
+
     }
 }

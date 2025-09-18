@@ -42,37 +42,34 @@ namespace DashboardAgro.Application.UseCases
             Console.WriteLine("Carga inicial concluída!");
         }
 
-        public async Task ExecutarCargaIncremental()
+        public async Task ExecutarCargaIncremental(int anoInicial)
         {
-            var anoAtual = DateTime.UtcNow.Year;
+            int anoAtual = DateTime.UtcNow.Year;
+            var requisicoesImportacao = new Dictionary<int, ControleImportacao>();
 
-            var anos = new Dictionary<int, ControleImportacao>
+            Console.WriteLine($"Importando dados de {anoInicial} até {anoAtual}");
+
+            for (int ano = anoInicial; ano <= anoAtual; ano++)
             {
+                if (!requisicoesImportacao.TryGetValue(ano, out ControleImportacao? value))
                 {
-                    anoAtual, new ControleImportacao
+                    requisicoesImportacao.Add(ano, new ControleImportacao
                     {
-                        Ano = anoAtual,
+                        Ano = ano,
                         StatusImportacao = StatusImportacaoDados.Pendente,
                         DescricaoStatusImportacao = StatusImportacaoDados.Pendente.ToString(),
                         QuantidadeRegistros = 0,
                         ImportedDate = DateTime.UtcNow
-                    }
-                },
-                {
-                    anoAtual - 1, new ControleImportacao
-                    {
-                       Ano = anoAtual - 1,
-                       StatusImportacao = StatusImportacaoDados.Pendente,
-                       DescricaoStatusImportacao = StatusImportacaoDados.Pendente.ToString(),
-                       QuantidadeRegistros = 0,
-                       ImportedDate = DateTime.UtcNow
-                    }
+                    });
                 }
-            };
+                else
+                {
+                    await _importarDadosBigQuery.AtualizarRequisicaoImportacaoAsync(value, StatusImportacaoDados.Pendente);
+                }
+            }
 
-            await ImportarCarga(anos);
-
-            Console.WriteLine("Carga incremental concluída!");
+            await ImportarCarga(requisicoesImportacao);
+            Console.WriteLine("Requisição de importacao de cargas enviadas...");
         }
 
         private async Task ImportarCarga(Dictionary<int, ControleImportacao> anos)
@@ -87,26 +84,69 @@ namespace DashboardAgro.Application.UseCases
 
             if (importacoesPendentes.Count > 0)
             {
+
                 foreach (ControleImportacao importacao in importacoesPendentes)
                 {
-                    var unidadesFederativasBigQuery = _bigQuery.ObterUnidadesFederativas(importacao.Ano);
-                    var unidadesFederativas = new Dictionary<string, UnidadeFederativa>();
-
-                    foreach (var item in unidadesFederativasBigQuery)
+                    try
                     {
-                        var uf = new UnidadeFederativa
+                        var unidadesFederativasBigQuery = _bigQuery.ObterUnidadesFederativas(importacao.Ano);
+                        var unidadesFederativas = new Dictionary<string, UnidadeFederativa>();
+
+                        foreach (var item in unidadesFederativasBigQuery)
                         {
-                            NomeUF = item.NomeUF,
-                            SiglaUF = item.SiglaUF,
-                        };
+                            unidadesFederativas.Add(item.SiglaUF, item);
+                        }
 
-                        unidadesFederativas.Add(item.SiglaUF, item);
+                        Console.WriteLine($"Iniciou importação de Regiões! Ano: {importacao.Ano}");
+                        importacao.QuantidadeRegistros = await _importarDadosBigQuery.ImportarRegioesUFsAsync(unidadesFederativas);
+                        Console.WriteLine($"Regiões importadas com sucesso! Ano: {importacao.Ano} - Qtd: {importacao.QuantidadeRegistros}");
+
+                        Console.WriteLine($"Iniciou importação de Unidades Federais! Ano: {importacao.Ano}");
+                        int qtdUnidadesImportadas = await _importarDadosBigQuery.ImportarUnidadesFederativasAsync(unidadesFederativas);
+                        Console.WriteLine($"Unidades Federais importadas com sucesso! Ano: {importacao.Ano} - Qtd: {qtdUnidadesImportadas}");
+
+                        importacao.QuantidadeRegistros += qtdUnidadesImportadas;
+
+                        // ## IMPORTAÇÃO DAS LAVOURAS E PRODUÇÕES PERMANENTES ##
+                        Console.WriteLine($"Iniciou importação de Produções Permanentes! Ano: {importacao.Ano}");
+                        var lavourasPermBigQuery = _bigQuery.ObterLavoura(importacao.Ano, TipoLavoura.Permanente);
+
+                        int qtdProducoesImportadas = await _importarDadosBigQuery.ImportarProducoesAsync(lavourasPermBigQuery);
+                        importacao.QuantidadeRegistros += qtdProducoesImportadas;
+                        Console.WriteLine($"Produções Permanentes importadas com sucesso! Ano: {importacao.Ano} - Qtd: {qtdProducoesImportadas}");
+
+                        Console.WriteLine($"Iniciou importação de Lavouras Permanentes! Ano: {importacao.Ano}");
+                        int qtdLavourasPermanentes = await _importarDadosBigQuery.ImportarDadosLavouraPermanenteAsync(lavourasPermBigQuery);
+                        importacao.QuantidadeRegistros += qtdLavourasPermanentes;
+                        Console.WriteLine($"Lavouras Permanentes importadas com sucesso! Ano: {importacao.Ano} - Qtd: {qtdLavourasPermanentes}");
+
+                        // ## IMPORTAÇÃO DAS LAVOURAS E PRODUÇÕES TEMPORÁRIAS ##
+                        Console.WriteLine($"Iniciou importação de Produções Temporárias! Ano: {importacao.Ano}");
+                        var lavourasTempBigQuery = _bigQuery.ObterLavoura(importacao.Ano, TipoLavoura.Temporaria);
+
+                        int qtdProducoesTemporarias = await _importarDadosBigQuery.ImportarProducoesAsync(lavourasTempBigQuery);
+                        importacao.QuantidadeRegistros += qtdProducoesTemporarias;
+                        Console.WriteLine($"Produções Temporárias importadas com sucesso! Ano: {importacao.Ano} - Qtd: {qtdProducoesTemporarias}");
+
+                        Console.WriteLine($"Iniciou importação de Lavouras Permanentes! Ano: {importacao.Ano}");
+                        int qtdLavourasTemporarias = await _importarDadosBigQuery.ImportarDadosLavouraPermanenteAsync(lavourasTempBigQuery);
+                        importacao.QuantidadeRegistros += qtdLavourasTemporarias;
+                        Console.WriteLine($"Lavouras Permanentes importadas com sucesso! Ano: {importacao.Ano} - Qtd: {qtdLavourasTemporarias}");
+
+                        importacao.QuantidadeRegistros += qtdLavourasTemporarias;
+
+                        await _importarDadosBigQuery.AtualizarRequisicaoImportacaoAsync(importacao, StatusImportacaoDados.Concluido);
                     }
+                    catch (Exception e)
+                    {
+                        importacao.DescricaoStatusImportacao = e.Message;
 
-                     int qtdImportada = await _importarDadosBigQuery.ImportarUnidadesFederativasAsync(unidadesFederativas);
-
-                    Console.WriteLine($"Importação unidades federais importadas com sucesso! Quantidade: {qtdImportada}");
+                        await _importarDadosBigQuery.AtualizarRequisicaoImportacaoAsync(importacao, StatusImportacaoDados.Erro);
+                        throw;
+                    }
                 }
+
+
             }
         }
     }

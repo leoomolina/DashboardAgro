@@ -1,8 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using DashboardAgro.Domain.Contracts;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DashboardAgro.Infraestructure.Tables
 {
-    public abstract class LavouraBase : TableBase
+    public abstract class LavouraBase : TableBase, ILavouraEntity
     {
         public int Ano { get; set; }
         public long AreaColhida { get; set; }
@@ -15,7 +16,11 @@ namespace DashboardAgro.Infraestructure.Tables
         [ForeignKey("IdProducao")]
         public ProducaoTable Producao { get; set; }
 
-        [ForeignKey("IdEstado")]
+        [ForeignKey("IdUf")]
         public UFTable Uf { get; set; }
+
+        string ILavouraEntity.SiglaUF => Uf != null ? Uf.SiglaUF : "";
+
+        string ILavouraEntity.ProducaoDescricao => Producao != null ? Producao.Descricao : "";
     }
 }

@@ -57,7 +57,7 @@ namespace DashboardAgro.Infraestructure.Repositories
                         Descricao = p.Uf.Regiao.Descricao
                     }
                 },
-                Produto = p.Producao.Descricao,
+                Producao = p.Producao.Descricao,
                 AreaColhida = p.AreaColhida,
                 QuantidadeProduzida = p.QuantidadeProduzida,
                 ValorProducao = p.ValorProducao,

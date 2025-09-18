@@ -73,9 +73,6 @@ namespace DashboardAgro.Infraestructure.Migrations
                     b.Property<long>("AreaDestinadaColheita")
                         .HasColumnType("bigint");
 
-                    b.Property<int>("IdEstado")
-                        .HasColumnType("int");
-
                     b.Property<int>("IdProducao")
                         .HasColumnType("int");
 
@@ -96,9 +93,9 @@ namespace DashboardAgro.Infraestructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("IdEstado");
-
                     b.HasIndex("IdProducao");
+
+                    b.HasIndex("IdUf");
 
                     b.ToTable("DadosLavouraPermanente", (string)null);
                 });
@@ -120,9 +117,6 @@ namespace DashboardAgro.Infraestructure.Migrations
                     b.Property<long>("AreaPlantada")
                         .HasColumnType("bigint");
 
-                    b.Property<int>("IdEstado")
-                        .HasColumnType("int");
-
                     b.Property<int>("IdProducao")
                         .HasColumnType("int");
 
@@ -143,9 +137,9 @@ namespace DashboardAgro.Infraestructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("IdEstado");
-
                     b.HasIndex("IdProducao");
+
+                    b.HasIndex("IdUf");
 
                     b.ToTable("DadosLavouraTemporaria", (string)null);
                 });
@@ -224,15 +218,15 @@ namespace DashboardAgro.Infraestructure.Migrations
 
             modelBuilder.Entity("DashboardAgro.Infraestructure.Tables.DadosLavouraPermanenteTable", b =>
                 {
-                    b.HasOne("DashboardAgro.Infraestructure.Tables.UFTable", "Uf")
-                        .WithMany()
-                        .HasForeignKey("IdEstado")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("DashboardAgro.Infraestructure.Tables.ProducaoTable", "Producao")
                         .WithMany()
                         .HasForeignKey("IdProducao")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DashboardAgro.Infraestructure.Tables.UFTable", "Uf")
+                        .WithMany()
+                        .HasForeignKey("IdUf")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -243,15 +237,15 @@ namespace DashboardAgro.Infraestructure.Migrations
 
             modelBuilder.Entity("DashboardAgro.Infraestructure.Tables.DadosLavouraTemporariaTable", b =>
                 {
-                    b.HasOne("DashboardAgro.Infraestructure.Tables.UFTable", "Uf")
-                        .WithMany()
-                        .HasForeignKey("IdEstado")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("DashboardAgro.Infraestructure.Tables.ProducaoTable", "Producao")
                         .WithMany()
                         .HasForeignKey("IdProducao")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DashboardAgro.Infraestructure.Tables.UFTable", "Uf")
+                        .WithMany()
+                        .HasForeignKey("IdUf")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
