@@ -1,5 +1,5 @@
-﻿using DashboardAgro.Application.Interfaces;
-using DashboardAgro.Application.UseCases;
+﻿using DashboardAgro.Application.Contracts;
+using DashboardAgro.Application.UseCases.Importacao;
 using DashboardAgro.Domain.Contracts;
 using DashboardAgro.Infraestructure.Repositories;
 using DashboardAgro.Infraestructure.Services;
@@ -28,7 +28,7 @@ namespace DashboardAgro.Infraestructure
 
             services.AddScoped<IImportarDados, ImportaDados>();
             services.AddScoped<ImportarDadosBigQueryHandler>();
-            services.AddScoped<ILavouraRepository, DadosLavouraQueryRepository>();
+            services.AddScoped<ILavouraPermanenteRepository, LavouraPermanenteQueryRepository>();
 
             return services;
         }

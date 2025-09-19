@@ -1,4 +1,5 @@
-﻿using DashboardAgro.Domain.Contracts;
+﻿using DashboardAgro.Application.Contracts;
+using DashboardAgro.Domain.Contracts;
 using DashboardAgro.Domain.Entities;
 using DashboardAgro.Domain.Enums;
 using DashboardAgro.Domain.ValueObjects;
@@ -283,6 +284,47 @@ namespace DashboardAgro.Infraestructure.Repositories
             }
 
             return novos.Count;
+        }
+
+        public async Task<IEnumerable<int>> GetAnosDisponiveisAsync()
+            => await _context.ControleImportacaoTable
+                .Where(r => r.StatusImportacao == StatusImportacaoDados.Concluido)
+                .Select(r => r.Ano).Distinct().ToListAsync();
+
+        public async Task<IEnumerable<ControleImportacao>> GetImportacao(StatusImportacaoDados? status)
+        {
+            if (status.HasValue)
+            {
+                return await _context.ControleImportacaoTable
+                    .Where(r => r.StatusImportacao == status.Value)
+                    .Select(r => new ControleImportacao
+                    {
+                        Id = r.Id,
+                        Ano = r.Ano,
+                        DescricaoStatusImportacao = r.DescricaoStatusImportacao,
+                        DataInicio = r.DataInicio,
+                        DataFim = r.DataFim,
+                        QuantidadeRegistros = r.QuantidadeRegistros,
+                        ImportedDate = r.ImportedDate,
+                        StatusImportacao = r.StatusImportacao
+                    }).ToListAsync();
+            }
+            else
+            {
+                return await _context.ControleImportacaoTable
+                    .Select(r => new ControleImportacao
+                    {
+                        Id = r.Id,
+                        Ano = r.Ano,
+                        DescricaoStatusImportacao = r.DescricaoStatusImportacao,
+                        DataInicio = r.DataInicio,
+                        DataFim = r.DataFim,
+                        QuantidadeRegistros = r.QuantidadeRegistros,
+                        ImportedDate = r.ImportedDate,
+                        StatusImportacao = r.StatusImportacao
+                    }).ToListAsync();
+            }
+
         }
     }
 }

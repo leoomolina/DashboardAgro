@@ -1,4 +1,4 @@
-﻿namespace DashboardAgro.Application.Interfaces
+﻿namespace DashboardAgro.Application.Contracts
 {
     public interface IRepository<TEntity> where TEntity : class
     {

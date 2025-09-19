@@ -2,7 +2,7 @@
 using DashboardAgro.Domain.Enums;
 using DashboardAgro.Domain.ValueObjects;
 
-namespace DashboardAgro.Application.Interfaces
+namespace DashboardAgro.Application.Contracts
 {
     public interface IBigQueryService
     {

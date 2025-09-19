@@ -1,9 +1,8 @@
-﻿using DashboardAgro.Application.Interfaces;
-using DashboardAgro.Domain.Contracts;
+﻿using DashboardAgro.Application.Contracts;
 using DashboardAgro.Domain.Entities;
 using DashboardAgro.Domain.Enums;
 
-namespace DashboardAgro.Application.UseCases
+namespace DashboardAgro.Application.UseCases.Importacao
 {
     public class ImportarDadosBigQueryHandler
     {

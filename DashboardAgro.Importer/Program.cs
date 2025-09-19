@@ -1,4 +1,4 @@
-﻿using DashboardAgro.Application.UseCases;
+﻿using DashboardAgro.Application.UseCases.Importacao;
 using DashboardAgro.Infraestructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
