@@ -26,7 +26,7 @@ A arquitetura segue o modelo de **microsserviços containerizados**:
 
 ### Frontend
 - **Angular** — Framework para criação do dashboard  
-- **** — Visualizações gráficas  
+- **Chart.js** — Visualizações gráficas  
 - **** — Visualização geográfica interativa  
 
 ### Dados
@@ -83,28 +83,28 @@ A arquitetura segue o modelo de **microsserviços containerizados**:
 - [x] Implementar rotina de **sincronização do ano corrente (2023 em diante)** → verificar atualização do dataset e importar apenas dados novos
 - [x] Adicionar logs para acompanhar status da importação
 - [x] Criar tabela de **controle de status de importação** (ano, status, data de importação)
-- [ ] Expor endpoint interno ou sinalização para o front verificar quais anos já foram importados
+- [x] Expor endpoint interno ou sinalização para o front verificar quais anos já foram importados
 
 ---
 
 ### 🔹 REST API (DashboardAgro.API)
 - [x] Criar **DashboardAgro.API** que expõe dados do SQL Server via **REST API**
-- [ ] Implementar endpoints para:
-  - [ ] Listar dados agregados (por ano, estado, região)
-  - [ ] Buscar detalhes de um ano específico
-  - [ ] Consultar status da ingestão (anos importados x pendentes)
-- [ ] Aplicar normalização dos dados antes de entregar ao front
+- [x] Implementar endpoints para:
+  - [x] Listar dados agregados (por ano, estado, região)
+  - [x] Buscar detalhes de um ano específico
+  - [x] Consultar status da ingestão (anos importados x pendentes)
+- [x] Aplicar normalização dos dados antes de entregar ao front
 - [ ] Configurar versionamento básico (ex.: `/api/v1/...`)
 
 ---
 
 ### 🔹 Front-end (Angular)
 - [x] Criar projeto Angular base
-- [ ] Montar layout inicial (header, sidebar, dashboards)
-- [ ] Criar tela de **dashboard com gráficos**
-- [ ] Integrar **mapa do Brasil** com dados agregados
+- [x] Montar layout inicial (header, sidebar, dashboards)
+- [x] Criar tela de **dashboard com gráficos**
+- [ ] Integrar **mapa** com dados agregados
 - [ ] Criar consulta de **status de ingestão** mostrando anos já importados / em importação
-- [ ] Integrar chamadas a API
+- [x] Integrar chamadas a API
 - [ ] Adicionar loading/spinners para feedback durante consultas
 
 ---
@@ -112,7 +112,7 @@ A arquitetura segue o modelo de **microsserviços containerizados**:
 ### 🔹 DevOps & Deploy
 - [x] Criar **Dockerfile** para cada microsserviço (`DashboardAgro.Importer`, `DashboardAgro.API`, `front-end`)
 - [x] Criar `docker-compose.yml` para orquestrar **SQL Server + DashboardAgro.Importer + DashboardAgro.API + front**
-- [ ] Testar execução local (importação → api → front consumindo)
+- [x] Testar execução local (importação → api → front consumindo)
 - [ ] Publicar imagens no **Docker Hub**
 
 ---
@@ -122,6 +122,5 @@ A arquitetura segue o modelo de **microsserviços containerizados**:
 - [x] Listar o que já foi feito (BD, ms-ingestor base, API sem ms-api, front sem telas)
 - [x] Adicionar **to-do list** (esse que estamos montando)
 - [x] Explicar **como rodar o projeto localmente** (`docker compose up`)
-- [ ] Explicar como rodar ingestão histórica x atualização de dados correntes
 - [ ] Explicar arquitetura do código no backend (camadas, repositórios, controllers)
 - [ ] Incluir prints/telas assim que estiverem prontas
