@@ -1,5 +1,4 @@
-﻿using DashboardAgro.Application.DTOs;
-using DashboardAgro.Domain.Entities;
+﻿using DashboardAgro.Domain.Entities;
 
 namespace DashboardAgro.Application.Contracts
 {
@@ -9,8 +8,8 @@ namespace DashboardAgro.Application.Contracts
         Task<IEnumerable<Lavoura>> GetByCulturaAsync(int ano, int idProducao);
         Task<decimal> GetProdutividadeMediaAsync(int ano, int idProducao);
         Task<IEnumerable<(UnidadeFederativa UnidadeFederativa, decimal Producao)>> GetTopUFsAsync(int ano, int idProducao, int top = 10);
-        Task<List<ResumoAnoDTO>> GetResumoAnualLavouraPermanenteAsync(int ano);
-        Task<List<ResumoAnoByLavouraDTO>> GetResumoAnualByLavouraAsync(ResumoAnoByLavouraDTO.ResumoAnoByLavouraFilter filter);
+        Task<IEnumerable<ResumoDashboard>> GetResumoAnualLavouraPermanenteAsync(int ano, int idRegiao, int idUf);
+        Task<IEnumerable<ResumoDashboard>> GetResumoAnualByLavouraAsync(int ano, int idRegiao, int idUf, int idProducao);
         Task<IEnumerable<Lavoura>> GetAllAsync();
     }
 }

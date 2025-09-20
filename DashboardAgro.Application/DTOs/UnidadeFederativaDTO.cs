@@ -1,10 +1,10 @@
-﻿namespace DashboardAgro.Domain.Entities
+﻿namespace DashboardAgro.Application.DTOs
 {
-    public class UnidadeFederativa
+    public class UnidadeFederativaDTO
     {
         public int Id { get; set; }
         public string SiglaUF { get; set; }
         public string NomeUF { get; set; }
-        public Regiao Regiao { get; set; }
+        public RegiaoDTO Regiao { get; set; }
     }
 }

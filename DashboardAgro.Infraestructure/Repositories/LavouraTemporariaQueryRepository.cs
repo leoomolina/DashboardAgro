@@ -1,22 +1,23 @@
 ﻿using DashboardAgro.Application.Contracts;
+using DashboardAgro.Application.DTOs;
 using DashboardAgro.Domain.Entities;
 using DashboardAgro.Infraestructure.Tables;
 using Microsoft.EntityFrameworkCore;
 
 namespace DashboardAgro.Infraestructure.Repositories
 {
-    public class LavouraPermanenteQueryRepository : ILavouraPermanenteRepository
+    public class LavouraTemporariaQueryRepository : ILavouraTemporariaRepository
     {
         private readonly DatabaseContext _context;
 
-        public LavouraPermanenteQueryRepository(DatabaseContext context)
+        public LavouraTemporariaQueryRepository(DatabaseContext context)
         {
             _context = context;
         }
 
         public Task AddAsync(Lavoura lavoura)
         {
-            DadosLavouraPermanenteTable record = new()
+            DadosLavouraTemporariaTable record = new()
             {
                 Ano = lavoura.Ano,
                 AreaColhida = lavoura.AreaColhida,
@@ -24,7 +25,7 @@ namespace DashboardAgro.Infraestructure.Repositories
                 ValorProducao = lavoura.ValorProducao,
             };
 
-            _context.DadosLavouraPermanente.Add(record);
+            _context.DadosLavouraTemporaria.Add(record);
 
             return _context.SaveChangesAsync();
         }
@@ -32,7 +33,7 @@ namespace DashboardAgro.Infraestructure.Repositories
         public async Task<IEnumerable<Lavoura>> GetAllAsync()
         {
             return await _context.Producao
-            .Where(p => p.TipoLavoura == Domain.Enums.TipoLavoura.Permanente)
+            .Where(p => p.TipoLavoura == Domain.Enums.TipoLavoura.Temporaria)
             .Select(p => new Lavoura
             {
                 IdProducao = p.Id,
@@ -45,7 +46,7 @@ namespace DashboardAgro.Infraestructure.Repositories
         public async Task<IEnumerable<Lavoura>> GetByAnoAsync(int ano)
         {
             return await _context.DadosLavouraPermanente
-            .Where(p => p.Ano == ano && p.Producao.TipoLavoura == Domain.Enums.TipoLavoura.Permanente)
+            .Where(p => p.Ano == ano && p.Producao.TipoLavoura == Domain.Enums.TipoLavoura.Temporaria)
             .Select(p => new Lavoura
             {
                 Ano = p.Ano,
@@ -68,9 +69,9 @@ namespace DashboardAgro.Infraestructure.Repositories
             .ToListAsync();
         }
 
-        public async Task<IEnumerable<ResumoDashboard>> GetResumoAnualLavouraPermanenteAsync(int ano, int idRegiao, int idUf)
+        public async Task<List<ResumoDashboard>> GetResumoAnualLavouraTemporariaAsync(int ano, int idRegiao, int idUf)
         {
-            var query = _context.DadosLavouraPermanente
+            var query = _context.DadosLavouraTemporaria
                 .Where(d => d.Ano == ano);
 
             if (idUf > 0)
@@ -92,9 +93,9 @@ namespace DashboardAgro.Infraestructure.Repositories
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<ResumoDashboard>> GetResumoAnualByLavouraAsync(int ano, int idRegiao, int idUf, int idProducao)
+        public async Task<List<ResumoDashboard>> GetResumoAnualByLavouraAsync(int ano, int idRegiao, int idUf, int idProducao)
         {
-            var query = _context.DadosLavouraPermanente
+            var query = _context.DadosLavouraTemporaria
                 .Where(d => d.Ano == ano && d.IdProducao == idProducao);
 
             if (idUf > 0)
@@ -116,37 +117,7 @@ namespace DashboardAgro.Infraestructure.Repositories
                 .ToListAsync();
         }
 
-        public Task<IEnumerable<Lavoura>> GetByCulturaAsync(int ano, int idCultura)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<Lavoura?> GetByIdAsync(object id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<decimal> GetLavouraPermanenteByAnoAsync(int ano)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<decimal> GetProdutividadeMediaAsync(int ano, int idCultura)
-        {
-            throw new NotImplementedException();
-        }
-
         public Task<IEnumerable<(UnidadeFederativa UnidadeFederativa, decimal Producao)>> GetTopUFsAsync(int ano, int idProducao, int top = 10)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task SaveChangesAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task UpdateAsync(Lavoura entity)
         {
             throw new NotImplementedException();
         }

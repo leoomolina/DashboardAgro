@@ -1,4 +1,4 @@
-﻿using DashboardAgro.Application.UseCases.Importacao;
+﻿using DashboardAgro.Application.Handlers.Importacao;
 using DashboardAgro.Infraestructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -33,7 +33,7 @@ class Program
         }
         else
         {
-            await importador.ExecutarCargaIncremental(2022);
+            await importador.ExecutarCargaIncremental(2015);
         }
 
     }

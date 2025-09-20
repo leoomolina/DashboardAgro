@@ -1,6 +1,6 @@
-﻿namespace DashboardAgro.Application.DTOs
+﻿namespace DashboardAgro.Domain.Entities
 {
-    public class ResumoAnoDTO
+    public class ResumoDashboard
     {
         public string DescricaoRegiao { get; set; }
         public string SiglaUf { get; set; }

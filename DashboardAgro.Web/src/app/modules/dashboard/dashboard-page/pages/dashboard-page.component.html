@@ -1,0 +1,88 @@
+<div class="dashboard-container">
+  <div class="dashboard-header">
+    <h1 class="text-3xl font-bold text-gray-800">Dashboard Agronegócio</h1>
+    <p class="text-gray-500">
+      Análise de dados do setor agrícola brasileiro - Fonte: IBGE/PAM
+    </p>
+  </div>
+
+  <filter-bar (initialized)="onFilterBarInitialized($event)" (filtersApplied)="onFiltersApplied($event)">
+  </filter-bar>
+
+  <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
+    <app-card [title]="'Área Total Colhida'" [content]="valorTotalArea">
+    </app-card>
+
+    <app-card [title]="'Quantidade Produzida'" [content]="valorTotalPeso">
+    </app-card>
+
+    <app-card [title]="'Valor da Produção'" [content]="valorTotalDinheiro">
+    </app-card>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+    <app-producao-estado-chart [estados]="estados" [producao]="producao">
+    </app-producao-estado-chart>
+
+    <div class="bg-white rounded-lg shadow p-4">
+      <h4 class="leading-none flex items-center space-x-2">Outro Card</h4>
+      <app-mapa-brasil></app-mapa-brasil>
+    </div>
+  </div>
+  <div class="bg-white rounded-lg shadow p-4 mb-4">
+    <h4 class="text-lg font-semibold">
+      <span>Comparação: Lavouras Temporárias vs Permanentes</span>
+    </h4>
+    <p data-slot="card-description" class="">
+      Análise comparativa entre tipos de cultivos agrícolas
+    </p>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div class="space-y-6">
+        <div>
+          <h4 class="font-medium mb-4 flex items-center space-x-2"><span>Lavouras Temporárias</span></h4>
+        </div>
+        <div class="space-y-3">
+          <div class="flex justify-between items-center">
+            <span class="text-sm text-muted-foreground">Área Total</span>
+            <span data-slot="badge" class="">75.8M ha</span>
+          </div>
+          <div class="flex justify-between items-center">
+            <span class="text-sm text-muted-foreground">Área Total</span>
+            <span data-slot="badge" class="">75.8M ha</span>
+          </div>
+          <div class="flex justify-between items-center">
+            <span class="text-sm text-muted-foreground">Área Total</span>
+            <span data-slot="badge" class="">75.8M ha</span>
+          </div>
+        </div>
+        <div>
+          <h4 class="font-medium mb-4 flex items-center space-x-2"><span>Lavouras Temporárias</span></h4>
+        </div>
+        <div class="space-y-3">
+          <div class="flex justify-between items-center">
+            <span class="text-sm text-muted-foreground">Área Total</span>
+            <span data-slot="badge" class="">75.8M ha</span>
+          </div>
+          <div class="flex justify-between items-center">
+            <span class="text-sm text-muted-foreground">Área Total</span>
+            <span data-slot="badge" class="">75.8M ha</span>
+          </div>
+          <div class="flex justify-between items-center">
+            <span class="text-sm text-muted-foreground">Área Total</span>
+            <span data-slot="badge" class="">75.8M ha</span>
+          </div>
+        </div>
+      </div>
+      <div>
+        <h4 class="font-medium mb-4 text-center">Distribuição por Área</h4>
+
+      </div>
+      <div>
+        <h4 class="font-medium mb-4 text-center">Distribuição por Valor</h4>
+
+      </div>
+    </div>
+  </div>
+
+</div>

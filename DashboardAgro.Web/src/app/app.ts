@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { DashboardComponent } from './modules/dashboard/dashboard.component';
+import { DashboardPageComponent } from './modules/dashboard/dashboard-page/pages/dashboard-page.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, DashboardComponent], // importa o DashboardComponent
-  templateUrl: './app.html',  // template com <app-dashboard></app-dashboard>
+  imports: [CommonModule, DashboardPageComponent], 
+  templateUrl: './app.html',  
 })
 export class AppComponent { }

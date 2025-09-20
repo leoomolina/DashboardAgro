@@ -1,6 +1,6 @@
 ﻿namespace DashboardAgro.Application.DTOs
 {
-    public class ResumoAnoByLavouraDTO
+    public class ResumoAnoByProducaoDTO
     {
         public string DescricaoRegiao { get; set; }
         public string SiglaUf { get; set; }
@@ -11,7 +11,7 @@
         public decimal ValorProducao { get; set; }
         public decimal RendimentoMedioProducao { get; set; }
 
-        public class ResumoAnoByLavouraFilter
+        public class ResumoAnoByProducaoFilter
         {
             public int Ano { get; set; }
             public int IdProducao { get; set; }

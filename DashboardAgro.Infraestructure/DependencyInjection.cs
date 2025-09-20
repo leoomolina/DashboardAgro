@@ -1,6 +1,5 @@
 ﻿using DashboardAgro.Application.Contracts;
-using DashboardAgro.Application.UseCases.Importacao;
-using DashboardAgro.Domain.Contracts;
+using DashboardAgro.Application.Handlers.Importacao;
 using DashboardAgro.Infraestructure.Repositories;
 using DashboardAgro.Infraestructure.Services;
 using Microsoft.EntityFrameworkCore;
@@ -17,9 +16,6 @@ namespace DashboardAgro.Infraestructure
             services.AddDbContext<DatabaseContext>(options =>
                 options.UseSqlServer(configuration.GetConnectionString("Default")));
 
-            // registra os repositórios
-            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-
             services.AddScoped<IBigQueryService>(sp =>
             {
                 var projectId = configuration["BigQuery:ProjectId"];
@@ -29,6 +25,9 @@ namespace DashboardAgro.Infraestructure
             services.AddScoped<IImportarDados, ImportaDados>();
             services.AddScoped<ImportarDadosBigQueryHandler>();
             services.AddScoped<ILavouraPermanenteRepository, LavouraPermanenteQueryRepository>();
+            services.AddScoped<ILavouraTemporariaRepository, LavouraTemporariaQueryRepository>();
+
+            services.AddScoped<IParametrosRepository, ParametrosRepository>();
 
             return services;
         }

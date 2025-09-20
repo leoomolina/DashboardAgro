@@ -141,7 +141,7 @@ namespace DashboardAgro.Infraestructure.Repositories
                 await _context.SaveChangesAsync();
             }
 
-            return novas.Count;
+            return novas.Count + existentes.Count;;
         }
 
         public async Task<int> ImportarRegioesUFsAsync(Dictionary<string, UnidadeFederativa> unidadesFederativas)
@@ -170,7 +170,7 @@ namespace DashboardAgro.Infraestructure.Repositories
                 await _context.SaveChangesAsync();
             }
 
-            return novas.Count;
+            return novas.Count + existentes.Count + existentes.Count;
         }
 
         public async Task<int> ImportarUnidadesFederativasAsync(Dictionary<string, UnidadeFederativa> unidadesFederativas)
@@ -200,7 +200,7 @@ namespace DashboardAgro.Infraestructure.Repositories
                 await _context.SaveChangesAsync();
             }
 
-            return novas.Count;
+            return novas.Count + existentes.Count;
         }
 
         private async Task EnviarRequisicaoImportacaoAsync(int ano)
@@ -283,12 +283,12 @@ namespace DashboardAgro.Infraestructure.Repositories
                 await _context.SaveChangesAsync();
             }
 
-            return novos.Count;
+            return novos.Count + existentes.Count;
         }
 
         public async Task<IEnumerable<int>> GetAnosDisponiveisAsync()
             => await _context.ControleImportacaoTable
-                .Where(r => r.StatusImportacao == StatusImportacaoDados.Concluido)
+                .Where(r => r.StatusImportacao == StatusImportacaoDados.Concluido && r.QuantidadeRegistros > 100)
                 .Select(r => r.Ano).Distinct().ToListAsync();
 
         public async Task<IEnumerable<ControleImportacao>> GetImportacao(StatusImportacaoDados? status)

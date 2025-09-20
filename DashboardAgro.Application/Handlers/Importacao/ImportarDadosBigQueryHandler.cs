@@ -2,7 +2,7 @@
 using DashboardAgro.Domain.Entities;
 using DashboardAgro.Domain.Enums;
 
-namespace DashboardAgro.Application.UseCases.Importacao
+namespace DashboardAgro.Application.Handlers.Importacao
 {
     public class ImportarDadosBigQueryHandler
     {
@@ -68,7 +68,7 @@ namespace DashboardAgro.Application.UseCases.Importacao
             }
 
             await ImportarCarga(requisicoesImportacao);
-            Console.WriteLine("Requisição de importacao de cargas enviadas...");
+            Console.WriteLine("Requisição de importacao de cargas finalizada.");
         }
 
         private async Task ImportarCarga(Dictionary<int, ControleImportacao> anos)
@@ -88,6 +88,8 @@ namespace DashboardAgro.Application.UseCases.Importacao
                 {
                     try
                     {
+                        await _importarDadosBigQuery.AtualizarRequisicaoImportacaoAsync(importacao, StatusImportacaoDados.EmProcessamento);
+
                         var unidadesFederativasBigQuery = _bigQuery.ObterUnidadesFederativas(importacao.Ano);
                         var unidadesFederativas = new Dictionary<string, UnidadeFederativa>();
 
@@ -127,8 +129,8 @@ namespace DashboardAgro.Application.UseCases.Importacao
                         importacao.QuantidadeRegistros += qtdProducoesTemporarias;
                         Console.WriteLine($"Produções Temporárias importadas com sucesso! Ano: {importacao.Ano} - Qtd: {qtdProducoesTemporarias}");
 
-                        Console.WriteLine($"Iniciou importação de Lavouras Permanentes! Ano: {importacao.Ano}");
-                        int qtdLavourasTemporarias = await _importarDadosBigQuery.ImportarDadosLavouraPermanenteAsync(lavourasTempBigQuery);
+                        Console.WriteLine($"Iniciou importação de Lavouras Temporárias! Ano: {importacao.Ano}");
+                        int qtdLavourasTemporarias = await _importarDadosBigQuery.ImportarDadosLavouraTemporariaAsync(lavourasTempBigQuery);
                         importacao.QuantidadeRegistros += qtdLavourasTemporarias;
                         Console.WriteLine($"Lavouras Permanentes importadas com sucesso! Ano: {importacao.Ano} - Qtd: {qtdLavourasTemporarias}");
 

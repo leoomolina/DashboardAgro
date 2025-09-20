@@ -38,7 +38,7 @@ services:
       - ./keys:/app/keys:ro
     depends_on:
       - sqlserver
-    command: ["--ano 2020"]
+    command: ["--ano 2015"]
 
   dashboard-web:
     build: 

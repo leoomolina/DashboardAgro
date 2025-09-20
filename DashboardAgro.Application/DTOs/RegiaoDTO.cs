@@ -1,6 +1,6 @@
-﻿namespace DashboardAgro.Domain.Entities
+﻿namespace DashboardAgro.Application.DTOs
 {
-    public class Regiao
+    public class RegiaoDTO
     {
         public int Id { get; set; }
         public string Descricao { get; set; }
