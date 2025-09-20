@@ -8,8 +8,8 @@ namespace DashboardAgro.Application.Contracts
         Task<IEnumerable<Lavoura>> GetByCulturaAsync(int ano, int idProducao);
         Task<decimal> GetProdutividadeMediaAsync(int ano, int idProducao);
         Task<IEnumerable<(UnidadeFederativa UnidadeFederativa, decimal Producao)>> GetTopUFsAsync(int ano, int idProducao, int top = 10);
-        Task<IEnumerable<ResumoDashboard>> GetResumoAnualLavouraPermanenteAsync(int ano, int idRegiao, int idUf);
-        Task<IEnumerable<ResumoDashboard>> GetResumoAnualByLavouraAsync(int ano, int idRegiao, int idUf, int idProducao);
+        Task<IEnumerable<ResumoLavouraAno>> GetResumoAnualLavouraPermanenteAsync(int ano, int idRegiao, int idUf);
+        Task<IEnumerable<ResumoLavouraAno>> GetResumoAnualByLavouraAsync(int ano, int idRegiao, int idUf, int idProducao);
         Task<IEnumerable<Lavoura>> GetAllAsync();
     }
 }

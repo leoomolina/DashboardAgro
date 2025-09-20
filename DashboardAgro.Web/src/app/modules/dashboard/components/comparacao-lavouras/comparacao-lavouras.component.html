@@ -1,0 +1,56 @@
+<div class="bg-white rounded-lg shadow p-4 mb-4">
+  <h4 class="text-lg font-semibold">
+    <span>Comparação: Lavouras Temporárias vs Permanentes</span>
+  </h4>
+  <p data-slot="card-description" class="">
+    Análise comparativa entre tipos de cultivos agrícolas
+  </p>
+
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <div class="space-y-3">
+      <div *ngFor="let lavoura of lavouras" class="space-y-3 border-2 border-gray-100 p-4 my-4 rounded-lg">
+        <h4 class="text-xl font-semibold flex items-center space-x-2 mb-4">
+          <span>{{ lavoura.descricao }}</span>
+        </h4>
+
+        <div class="flex justify-between items-center">
+          <span class="text-base text-muted-foreground text-gray-500">Área Colhida</span>
+          <span
+            class="inline-flex items-center justify-center rounded-lg border px-3 py-0.5 text-sm font-medium bg-gray-50">
+            {{ formatarArea(lavoura.areaColhida) }}
+          </span>
+        </div>
+
+        <div class="flex justify-between items-center">
+          <span class="text-base text-muted-foreground text-gray-500">Quantidade Produzida</span>
+          <span
+            class="inline-flex items-center justify-center rounded-lg border px-3 py-0.5 text-sm font-medium bg-gray-50">
+            {{ formatarPeso(lavoura.quantidadeProduzida) }}
+          </span>
+        </div>
+
+        <div class="flex justify-between items-center">
+          <span class="text-base text-muted-foreground text-gray-500">Valor Produção</span>
+          <span
+            class="inline-flex items-center justify-center rounded-lg border px-3 py-0.5 text-sm font-medium bg-gray-50">
+            {{ formatarDinheiro(lavoura.valorProducao) }}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="border-2 border-gray-100 p-4 my-4 rounded-lg flex flex-col items-center space-y-3">
+      <h4 class="font-semibold text-center">Distribuição por Área</h4>
+      <app-donut-chart [lavouras]="lavouras" tipo="area">
+      </app-donut-chart>
+    </div>
+
+
+    <div class="border-2 border-gray-100 p-4 my-4 rounded-lg flex flex-col items-center space-y-3">
+      <h4 class="font-semibold text-center">Distribuição por Valor</h4>
+
+      <app-donut-chart [lavouras]="lavouras" tipo="valorProducao">
+      </app-donut-chart>
+    </div>
+  </div>
+</div>

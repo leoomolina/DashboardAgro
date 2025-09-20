@@ -11,6 +11,7 @@ import { ResumoEstadoDTO } from '../../../../core/models/resumo-estado.dto';
 import { UnidadeFederativaDTO } from '../../../../core/models/unidade-federativa.dto';
 import { RegiaoBrasilDTO } from '../../../../core/models/regiao-brasil.dto';
 import { MapaBrasilComponent } from '../../../../shared/map/mapa-brasil.component';
+import { ComparacaoLavourasCard } from '../../components/comparacao-lavouras/comparacao-lavouras.component';
 
 @Component({
   selector: 'dashboard-page',
@@ -20,7 +21,8 @@ import { MapaBrasilComponent } from '../../../../shared/map/mapa-brasil.componen
     CardComponent,
     DashboardFiltersComponent,
     ProducaoEstadoChartComponent,
-    MapaBrasilComponent
+    MapaBrasilComponent,
+    ComparacaoLavourasCard,
   ],
   templateUrl: './dashboard-page.component.html',
   styleUrls: ['./dashboard-page.component.css']
@@ -35,7 +37,36 @@ export class DashboardPageComponent implements OnInit {
   valorTotalDinheiro!: string;
   valorTotalPeso!: string;
 
-  resumoAnual!: ResumoAnualDTO;
+  resumoAnual: ResumoAnualDTO =
+    {
+      ano: new Date().getFullYear(),
+      areaColhidaTotal: 0,
+      valorProducaoTotal: 0,
+      quantidadeProduzidaTotal: 0,
+      lavouras: [
+        {
+          descricao: "Lavoura Permanente",
+          areaColhida: 0,
+          quantidadeProduzida: 0,
+          valorProducao: 0,
+          id: 0,
+          areaPlantadaxDestinadaColheita: 0,
+          produtividadePercentual: 0
+        },
+        {
+          descricao: 'Lavoura Permanente',
+          areaColhida: 0,
+          quantidadeProduzida: 0,
+          valorProducao: 0,
+          id: 0,
+          areaPlantadaxDestinadaColheita: 0,
+          produtividadePercentual: 0
+        }
+      ]
+    };
+
+  resumoPorEstado: ResumoEstadoDTO[] = [];
+
   estados: string[] = [];
   producao: number[] = [];
 
@@ -54,14 +85,16 @@ export class DashboardPageComponent implements OnInit {
 
       this.resumoAnual = data;
 
-      this.valorTotalArea = FormatUtils.formatarArea(this.resumoAnual.areaColhida);
-      this.valorTotalDinheiro = FormatUtils.formatarDinheiro(this.resumoAnual.valorProducao);
-      this.valorTotalPeso = FormatUtils.formatarPeso(this.resumoAnual.quantidadeProduzida);
+      this.valorTotalArea = FormatUtils.formatarArea(this.resumoAnual.areaColhidaTotal);
+      this.valorTotalDinheiro = FormatUtils.formatarDinheiro(this.resumoAnual.valorProducaoTotal);
+      this.valorTotalPeso = FormatUtils.formatarPeso(this.resumoAnual.quantidadeProduzidaTotal);
     })
 
     this.apiService.getResumoPorEstado(this.selectedAno, this.selectedRegiao.id, this.selectedTipoLavoura.id).subscribe((dados: ResumoEstadoDTO[]) => {
+      this.resumoPorEstado = dados;
+
       this.estados = dados.map(d => d.siglaUf);
-      this.producao = dados.map(d => d.quantidadeProduzida);
+      this.producao = dados.map(d => d.quantidadeProduzidaTotal);
     });
 
     this.loading = false;

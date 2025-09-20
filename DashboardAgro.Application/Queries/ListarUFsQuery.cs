@@ -1,5 +1,4 @@
 ﻿using DashboardAgro.Application.DTOs;
-using DashboardAgro.Domain.Entities;
 using MediatR;
 
 namespace DashboardAgro.Application.Queries

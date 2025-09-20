@@ -1,6 +1,7 @@
 ﻿using DashboardAgro.Application.Contracts;
 using DashboardAgro.Application.DTOs;
 using DashboardAgro.Domain.Entities;
+using DashboardAgro.Domain.Enums;
 using DashboardAgro.Infraestructure.Tables;
 using Microsoft.EntityFrameworkCore;
 
@@ -69,7 +70,7 @@ namespace DashboardAgro.Infraestructure.Repositories
             .ToListAsync();
         }
 
-        public async Task<List<ResumoDashboard>> GetResumoAnualLavouraTemporariaAsync(int ano, int idRegiao, int idUf)
+        public async Task<List<ResumoLavouraAno>> GetResumoAnualLavouraTemporariaAsync(int ano, int idRegiao, int idUf)
         {
             var query = _context.DadosLavouraTemporaria
                 .Where(d => d.Ano == ano);
@@ -81,9 +82,10 @@ namespace DashboardAgro.Infraestructure.Repositories
                 query = query.Where(d => d.Uf.IdRegiao == idRegiao);
 
             return await query.GroupBy(d => new { d.IdUf })
-                .Select(g => new ResumoDashboard
+                .Select(g => new ResumoLavouraAno
                 {
                     SiglaUf = g.First().Uf.SiglaUF,
+                    TipoLavoura = TipoLavoura.Temporaria,
                     Ano = ano,
                     AreaColhida = g.Sum(x => x.AreaColhida),
                     QuantidadeProduzida = g.Sum(x => x.QuantidadeProduzida),
@@ -93,7 +95,7 @@ namespace DashboardAgro.Infraestructure.Repositories
                 .ToListAsync();
         }
 
-        public async Task<List<ResumoDashboard>> GetResumoAnualByLavouraAsync(int ano, int idRegiao, int idUf, int idProducao)
+        public async Task<List<ResumoLavouraAno>> GetResumoAnualByLavouraAsync(int ano, int idRegiao, int idUf, int idProducao)
         {
             var query = _context.DadosLavouraTemporaria
                 .Where(d => d.Ano == ano && d.IdProducao == idProducao);
@@ -105,9 +107,10 @@ namespace DashboardAgro.Infraestructure.Repositories
                 query = query.Where(d => d.Uf.IdRegiao == idRegiao);
 
             return await query.GroupBy(d => new { d.IdUf })
-                .Select(g => new ResumoDashboard
+                .Select(g => new ResumoLavouraAno
                 {
                     SiglaUf = g.First().Uf.SiglaUF,
+                    TipoLavoura = TipoLavoura.Temporaria,
                     Ano = ano,
                     AreaColhida = g.Sum(x => x.AreaColhida),
                     QuantidadeProduzida = g.Sum(x => x.QuantidadeProduzida),

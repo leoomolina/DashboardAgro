@@ -68,7 +68,7 @@ namespace DashboardAgro.Infraestructure.Repositories
             .ToListAsync();
         }
 
-        public async Task<IEnumerable<ResumoDashboard>> GetResumoAnualLavouraPermanenteAsync(int ano, int idRegiao, int idUf)
+        public async Task<IEnumerable<ResumoLavouraAno>> GetResumoAnualLavouraPermanenteAsync(int ano, int idRegiao, int idUf)
         {
             var query = _context.DadosLavouraPermanente
                 .Where(d => d.Ano == ano);
@@ -80,7 +80,7 @@ namespace DashboardAgro.Infraestructure.Repositories
                 query = query.Where(d => d.Uf.IdRegiao == idRegiao);
 
             return await query.GroupBy(d => new { d.IdUf })
-                .Select(g => new ResumoDashboard
+                .Select(g => new ResumoLavouraAno
                 {
                     SiglaUf = g.First().Uf.SiglaUF,
                     Ano = ano,
@@ -88,11 +88,12 @@ namespace DashboardAgro.Infraestructure.Repositories
                     QuantidadeProduzida = g.Sum(x => x.QuantidadeProduzida),
                     ValorProducao = g.Sum(x => x.ValorProducao),
                     DescricaoRegiao = g.First().Uf.Regiao.Descricao,
+                    TipoLavoura = Domain.Enums.TipoLavoura.Permanente
                 })
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<ResumoDashboard>> GetResumoAnualByLavouraAsync(int ano, int idRegiao, int idUf, int idProducao)
+        public async Task<IEnumerable<ResumoLavouraAno>> GetResumoAnualByLavouraAsync(int ano, int idRegiao, int idUf, int idProducao)
         {
             var query = _context.DadosLavouraPermanente
                 .Where(d => d.Ano == ano && d.IdProducao == idProducao);
@@ -104,7 +105,7 @@ namespace DashboardAgro.Infraestructure.Repositories
                 query = query.Where(d => d.Uf.IdRegiao == idRegiao);
 
             return await query.GroupBy(d => new { d.IdUf })
-                .Select(g => new ResumoDashboard
+                .Select(g => new ResumoLavouraAno
                 {
                     SiglaUf = g.First().Uf.SiglaUF,
                     Ano = ano,
@@ -112,6 +113,7 @@ namespace DashboardAgro.Infraestructure.Repositories
                     QuantidadeProduzida = g.Sum(x => x.QuantidadeProduzida),
                     ValorProducao = g.Sum(x => x.ValorProducao),
                     DescricaoRegiao = g.First().Uf.Regiao.Descricao,
+                    TipoLavoura = Domain.Enums.TipoLavoura.Permanente
                 })
                 .ToListAsync();
         }

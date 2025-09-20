@@ -21,39 +21,41 @@ namespace DashboardAgro.Application.Handlers
 
         public async Task<IEnumerable<ResumoAnoDTO>> Handle(GetResumoAnualByEstadoAsyncQuery request, CancellationToken cancellationToken)
         {
-            IEnumerable<ResumoDashboard> resumo;
+            var lavourasPermanente = request.TipoLavoura != TipoLavoura.Temporaria
+                ? await _repositoryLavouraPermanente.GetResumoAnualLavouraPermanenteAsync(request.Ano, request.IdRegiao, 0)
+                : [];
 
-            switch (request.TipoLavoura)
-            {
-                case TipoLavoura.Permanente:
-                    resumo = await _repositoryLavouraPermanente
-                        .GetResumoAnualLavouraPermanenteAsync(request.Ano, request.IdRegiao, 0);
-                    break;
-                case TipoLavoura.Temporaria:
-                    resumo = await _repositoryLavouraTemporaria
-                        .GetResumoAnualLavouraTemporariaAsync(request.Ano, request.IdRegiao, 0);
-                    break;
-                default:
-                    var lavourasPermanente = await _repositoryLavouraPermanente
-                        .GetResumoAnualLavouraPermanenteAsync(request.Ano, request.IdRegiao, 0);
-                    var lavourasTemporaria = await _repositoryLavouraTemporaria
-                        .GetResumoAnualLavouraTemporariaAsync(request.Ano, request.IdRegiao, 0);
+            var lavourasTemporaria = request.TipoLavoura != TipoLavoura.Permanente
+                ? await _repositoryLavouraTemporaria.GetResumoAnualLavouraTemporariaAsync(request.Ano, request.IdRegiao, 0)
+                : [];
 
-                    resumo = lavourasPermanente.Concat(lavourasTemporaria);
-                    break;
-            }
-
-            return [.. resumo
-                .GroupBy(l => new { l.Ano, l.SiglaUf, l.DescricaoRegiao })
-                .Select(g => new ResumoAnoDTO
+            List<LavouraDTO> lavourasList = [.. lavourasPermanente
+                .Concat(lavourasTemporaria)
+                .GroupBy(g => new { g.Ano, g.TipoLavoura })
+                .Select(l => new LavouraDTO
                 {
-                    Ano = g.Key.Ano,
-                    SiglaUf = g.Key.SiglaUf,
-                    DescricaoRegiao = g.Key.DescricaoRegiao,
-                    AreaColhida = g.Sum(x => x.AreaColhida),
-                    QuantidadeProduzida = g.Sum(x => x.QuantidadeProduzida),
-                    ValorProducao = g.Sum(x => x.ValorProducao)
-                }).OrderByDescending(r => r.QuantidadeProduzida)];
+                   Descricao = l.Key.TipoLavoura == TipoLavoura.Permanente ? "Lavoura Permanente" : "Lavoura Temporária",
+                    AreaColhida = l.Sum(r => r.AreaColhida),
+                    QuantidadeProduzida = l.Sum(r => r.QuantidadeProduzida),
+                    ValorProducao = l.Sum(r => r.ValorProducao),
+                    AreaPlantadaXDestinadaColheita = l.Sum(r => r.AreaPlantadaXDestinadaColheita),
+                })];
+
+            return [.. lavourasPermanente
+                .Concat(lavourasTemporaria)
+                .GroupBy(g => new { g.Ano, g.SiglaUf, g.DescricaoRegiao })
+                .Select(r => new ResumoAnoDTO
+                {
+                    Ano = r.Key.Ano,
+                    SiglaUf = r.Key.SiglaUf,
+                    DescricaoRegiao = r.Key.DescricaoRegiao,
+                    AreaColhidaTotal = r.Sum(s => s.AreaColhida),
+                    QuantidadeProduzidaTotal = r.Sum(s => s.QuantidadeProduzida),
+                    ValorProducaoTotal = r.Sum(s => s.ValorProducao),
+                    Lavouras = lavourasList
+                })
+                .OrderByDescending(o => o.QuantidadeProduzidaTotal)];
+
         }
     }
 }

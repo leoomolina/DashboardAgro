@@ -24,65 +24,14 @@
     <app-producao-estado-chart [estados]="estados" [producao]="producao">
     </app-producao-estado-chart>
 
-    <div class="bg-white rounded-lg shadow p-4">
-      <h4 class="leading-none flex items-center space-x-2">Outro Card</h4>
-      <app-mapa-brasil></app-mapa-brasil>
-    </div>
-  </div>
-  <div class="bg-white rounded-lg shadow p-4 mb-4">
-    <h4 class="text-lg font-semibold">
-      <span>Comparação: Lavouras Temporárias vs Permanentes</span>
-    </h4>
-    <p data-slot="card-description" class="">
-      Análise comparativa entre tipos de cultivos agrícolas
-    </p>
-
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-      <div class="space-y-6">
-        <div>
-          <h4 class="font-medium mb-4 flex items-center space-x-2"><span>Lavouras Temporárias</span></h4>
-        </div>
-        <div class="space-y-3">
-          <div class="flex justify-between items-center">
-            <span class="text-sm text-muted-foreground">Área Total</span>
-            <span data-slot="badge" class="">75.8M ha</span>
-          </div>
-          <div class="flex justify-between items-center">
-            <span class="text-sm text-muted-foreground">Área Total</span>
-            <span data-slot="badge" class="">75.8M ha</span>
-          </div>
-          <div class="flex justify-between items-center">
-            <span class="text-sm text-muted-foreground">Área Total</span>
-            <span data-slot="badge" class="">75.8M ha</span>
-          </div>
-        </div>
-        <div>
-          <h4 class="font-medium mb-4 flex items-center space-x-2"><span>Lavouras Temporárias</span></h4>
-        </div>
-        <div class="space-y-3">
-          <div class="flex justify-between items-center">
-            <span class="text-sm text-muted-foreground">Área Total</span>
-            <span data-slot="badge" class="">75.8M ha</span>
-          </div>
-          <div class="flex justify-between items-center">
-            <span class="text-sm text-muted-foreground">Área Total</span>
-            <span data-slot="badge" class="">75.8M ha</span>
-          </div>
-          <div class="flex justify-between items-center">
-            <span class="text-sm text-muted-foreground">Área Total</span>
-            <span data-slot="badge" class="">75.8M ha</span>
-          </div>
-        </div>
-      </div>
-      <div>
-        <h4 class="font-medium mb-4 text-center">Distribuição por Área</h4>
-
-      </div>
-      <div>
-        <h4 class="font-medium mb-4 text-center">Distribuição por Valor</h4>
-
+    <div class="bg-white rounded-lg  p-4 mb-4">
+      <h3 class="text-lg font-semibold">Produção por Estado</h3>
+      <div class="p-4">
+        <app-mapa-brasil [dados]="resumoPorEstado"></app-mapa-brasil>
       </div>
     </div>
   </div>
+
+  <app-comparacao-lavouras-card [lavouras]="resumoAnual.lavouras"></app-comparacao-lavouras-card>
 
 </div>

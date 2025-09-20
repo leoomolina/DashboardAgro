@@ -19,7 +19,7 @@ namespace DashboardAgro.API.Controllers
         }
 
         [HttpGet("resumo-anual")]
-        public async Task<IActionResult> GetResumoAnual(int ano, int idRegiao, int idUf, TipoLavoura tipoLavoura)
+        public async Task<IActionResult> GetResumoAnual(int ano, int idRegiao, int idUf, TipoLavoura? tipoLavoura)
         {
             if (ano == 0)
                 return BadRequest("Ano não pode ser nulo.");
@@ -29,7 +29,7 @@ namespace DashboardAgro.API.Controllers
         }
 
         [HttpGet("resumo-anual-por-estado")]
-        public async Task<IActionResult> GetResumoAnualPorEstado(int ano, int idRegiao, TipoLavoura tipoLavoura)
+        public async Task<IActionResult> GetResumoAnualPorEstado(int ano, int idRegiao, TipoLavoura? tipoLavoura)
         {
             if (ano == 0)
                 return BadRequest("Ano não pode ser nulo.");

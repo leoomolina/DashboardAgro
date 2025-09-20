@@ -4,14 +4,34 @@ import { provideRouter } from '@angular/router';
 import { DashboardPageComponent } from './app/modules/dashboard/dashboard-page/pages/dashboard-page.component';
 import { HttpClientModule } from '@angular/common/http';
 import { importProvidersFrom } from '@angular/core';
-import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
+import {
+  Chart,
+  ArcElement,
+  DoughnutController,
+  Tooltip,
+  Legend,
+  CategoryScale,
+  LinearScale,
+  BarController,
+  BarElement
+} from 'chart.js';
+
+Chart.register(
+  DoughnutController,
+  ArcElement,
+  Tooltip,
+  Legend,
+  CategoryScale,
+  LinearScale,
+  BarController,
+  BarElement
+);
 
 bootstrapApplication(AppComponent, {
   providers: [
     importProvidersFrom(HttpClientModule),
-    provideCharts(withDefaultRegisterables()),
     provideRouter([
-      { path: '', component: DashboardPageComponent } 
-    ]), provideCharts(withDefaultRegisterables())
+      { path: '', component: DashboardPageComponent }
+    ]),
   ]
 }).catch(err => console.error(err));
