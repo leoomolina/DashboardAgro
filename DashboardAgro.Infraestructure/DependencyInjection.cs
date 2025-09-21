@@ -26,6 +26,7 @@ namespace DashboardAgro.Infraestructure
             services.AddScoped<ImportarDadosBigQueryHandler>();
             services.AddScoped<ILavouraPermanenteRepository, LavouraPermanenteQueryRepository>();
             services.AddScoped<ILavouraTemporariaRepository, LavouraTemporariaQueryRepository>();
+            services.AddScoped<IDashboardRepository, DashboardQueryRepository>();
 
             services.AddScoped<IParametrosRepository, ParametrosRepository>();
 

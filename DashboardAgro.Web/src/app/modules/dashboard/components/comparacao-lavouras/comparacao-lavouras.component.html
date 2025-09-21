@@ -1,4 +1,4 @@
-<div class="bg-white rounded-lg shadow p-4 mb-4">
+<div class="bg-white rounded-lg shadow p-4 mb-4" *ngIf="!isLoading">
   <h4 class="text-lg font-semibold">
     <span>Comparação: Lavouras Temporárias vs Permanentes</span>
   </h4>
@@ -54,3 +54,4 @@
     </div>
   </div>
 </div>
+<app-loader [isLoading]="isLoading"></app-loader>

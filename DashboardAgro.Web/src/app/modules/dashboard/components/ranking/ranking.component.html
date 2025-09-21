@@ -1,4 +1,4 @@
-<div class="w-full max-w-md mx-auto bg-white rounded-xl shadow p-4">
+<div class="w-full max-w-md mx-auto bg-white rounded-xl shadow p-4 mb-4">
   <h2 class="text-lg font-bold mb-3">🏆 {{ titulo }}</h2>
 
   <ul class="divide-y divide-gray-200">
@@ -16,20 +16,19 @@
         </span>
 
         <!-- Nome -->
-        <span class="font-medium">{{ item.nome }}</span>
+        <span class="font-medium">{{ item.descricao }}</span>
 
         <!-- Etiqueta colorida -->
         <span
-          class="text-sm px-1.5 mx-2 py-1 rounded-lg text-white" *ngIf="item.etiqueta !== ''"
-          [style.backgroundColor]="getEtiquetaColor(item.etiqueta)"
+          class="inline-flex items-center rounded-full border px-2.5 py-0.5 font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground text-xs" *ngIf="item.tag !== ''"
+          
         >
-          {{ item.etiqueta }}
+          {{ item.tag }}
         </span>
       </div>
 
-      <!-- Valor -->
       <span class="text-sm font-semibold text-gray-700">
-        {{ item.valor }}
+        {{ formatarPeso(item.valor) }}
       </span>
     </li>
   </ul>

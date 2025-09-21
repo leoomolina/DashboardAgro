@@ -33,6 +33,7 @@ namespace DashboardAgro.Application.Handlers
                 .Select(l => new LavouraDTO
                 {
                     Descricao = l.Key.TipoLavoura == TipoLavoura.Permanente ? "Lavoura Permanente" : "Lavoura Temporária",
+                    TipoLavoura = l.Key.TipoLavoura,
                     AreaColhida = l.Sum(r => r.AreaColhida),
                     QuantidadeProduzida = l.Sum(r => r.QuantidadeProduzida),
                     ValorProducao = l.Sum(r => r.ValorProducao),

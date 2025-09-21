@@ -1,0 +1,8 @@
+<div class="border rounded-xl p-6 bg-white shadow-md w-full mb-4">
+    <titulo-card [titulo]="titulo" [subTitulo]="subTitulo"></titulo-card>
+
+    <!-- Grid de cards -->
+    <div class="grid grid-cols-5 gap-4 w-full">
+        <app-regiao-card *ngFor="let item of resumosPorRegiao" [descricao]="item.descricao" [area]="item.areaColhida"
+            [quantidadeProduzida]="item.quantidadeProduzida" [valorProducao]="item.valorProducao" [quantidadeProduzida]="item.produtividade"></app-regiao-card>
+    </div>

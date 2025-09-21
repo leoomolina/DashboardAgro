@@ -1,5 +1,4 @@
 ﻿using DashboardAgro.Application.Contracts;
-using DashboardAgro.Application.DTOs;
 using DashboardAgro.Domain.Entities;
 using DashboardAgro.Domain.Enums;
 using DashboardAgro.Infraestructure.Tables;

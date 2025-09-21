@@ -59,5 +59,27 @@ namespace DashboardAgro.API.Controllers
 
             return Ok(result);
         }
+
+        [HttpGet("analise-por-regiao")]
+        public async Task<IActionResult> AnalisePorRegiao(int ano, int idRegiao, int idUf, int idProducao, TipoLavoura? tipoLavoura)
+        {
+            var result = await _mediator.Send(new GetAnalisePorRegiaoAsyncQuery(ano, idRegiao, idUf, idProducao, tipoLavoura));
+
+            if (result == null)
+                return NotFound("Nenhum dado encontrado para o ano informado.");
+
+            return Ok(result);
+        }
+
+        [HttpGet("ranking-quantidade-produzida")]
+        public async Task<IActionResult> ListarRankingPorTipo(int ano, Agrupamento tipoRanking, int idRegiao, int idUf, int idProducao, TipoLavoura? tipoLavoura)
+        {
+            var result = await _mediator.Send(new GetRankingAsyncQuery(ano, tipoRanking, idRegiao, idUf, tipoLavoura, idProducao));
+
+            if (result == null)
+                return NotFound("Nenhum dado encontrado para o ano informado.");
+
+            return Ok(result);
+        }
     }
 }

@@ -21,6 +21,8 @@ builder.Services.AddMediatR(cfg =>
 {
     cfg.RegisterServicesFromAssembly(typeof(GetResumoByAnoAsyncHandler).Assembly);
     cfg.RegisterServicesFromAssembly(typeof(GetResumoAnualByEstadoAsyncHandler).Assembly);
+    cfg.RegisterServicesFromAssembly(typeof(GetAnalisePorRegiaoAsyncHandler).Assembly);
+    cfg.RegisterServicesFromAssembly(typeof(GetRankingAsyncHandler).Assembly);
     cfg.RegisterServicesFromAssembly(typeof(ListarLavourasTemporariasHandler).Assembly);
     cfg.RegisterServicesFromAssembly(typeof(ListarRegioesHandler).Assembly);
     cfg.RegisterServicesFromAssembly(typeof(ListarAnosDisponiveisAsyncHandler).Assembly);

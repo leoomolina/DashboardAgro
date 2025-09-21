@@ -15,6 +15,8 @@ import { ComparacaoLavourasCard } from '../../components/comparacao-lavouras/com
 import { RankingComponent } from '../../components/ranking/ranking.component';
 import { RankingItemDTO } from '../../../../core/models/ranking-dto';
 import { ProducaoDTO } from '../../../../core/models/producao-dto';
+import { forkJoin } from 'rxjs';
+import { AnalisePorRegiaoComponent } from '../../components/analise-por-regiao/analise-por-regiao.component';
 
 @Component({
   selector: 'dashboard-page',
@@ -26,7 +28,8 @@ import { ProducaoDTO } from '../../../../core/models/producao-dto';
     ProducaoEstadoChartComponent,
     MapaBrasilComponent,
     ComparacaoLavourasCard,
-    RankingComponent
+    RankingComponent,
+    AnalisePorRegiaoComponent,
   ],
   templateUrl: './dashboard-page.component.html',
   styleUrls: ['./dashboard-page.component.css']
@@ -51,6 +54,7 @@ export class DashboardPageComponent implements OnInit {
       lavouras: [
         {
           descricao: "Lavoura Permanente",
+          tipoLavoura: 0,
           areaColhida: 0,
           quantidadeProduzida: 0,
           valorProducao: 0,
@@ -60,6 +64,7 @@ export class DashboardPageComponent implements OnInit {
         },
         {
           descricao: 'Lavoura Permanente',
+          tipoLavoura: 1,
           areaColhida: 0,
           quantidadeProduzida: 0,
           valorProducao: 0,
@@ -73,20 +78,13 @@ export class DashboardPageComponent implements OnInit {
   resumoPorEstado: ResumoEstadoDTO[] = [];
 
   estados: string[] = [];
-  producao: number[] = [];
+  producaoTemporaria: number[] = [];
+  producaoPermanente: number[] = [];
 
-  rankingEstados: RankingItemDTO[] = [
-    { posicao: 1, nome: 'Mato Grosso', etiqueta: 'Centro-Oeste', valor: '25.000 ha' },
-    { posicao: 2, nome: 'Paraná', etiqueta: 'Sul', valor: '22.000 ha' },
-    { posicao: 3, nome: 'Bahia', etiqueta: 'Nordeste', valor: '20.000 ha' },
-    { posicao: 4, nome: 'São Paulo', etiqueta: 'Sudeste', valor: '18.500 ha' },
-  ];
-
-  rankingCulturas: RankingItemDTO[] = [
-    { posicao: 1, nome: 'Soja', etiqueta: '', valor: '40.000 ha' },
-    { posicao: 2, nome: 'Milho', etiqueta: '', valor: '30.000 ha' },
-    { posicao: 3, nome: 'Café', etiqueta: '', valor: '12.000 ha' },
-  ];
+  rankingRegioes: RankingItemDTO[] = [];
+  rankingUfs: RankingItemDTO[] = [];
+  rankingProducoesPermanentes: RankingItemDTO[] = [];
+  rankingProducoesTemporarias: RankingItemDTO[] = [];
 
   loading: boolean = false;
 
@@ -97,36 +95,86 @@ export class DashboardPageComponent implements OnInit {
   loadDashboard(): void {
     this.loading = true;
 
-    this.apiService.getResumoAnual(
+    const resumoAnual$ = this.apiService.getResumoAnual(
       this.selectedAno,
       this.selectedRegiao.id,
-      this.selectedUnidadeFederativa!.id,
+      this.selectedUnidadeFederativa?.id ?? 0,
       this.selectedTipoLavoura.id,
-      this.selectedProducao!.id
-    ).subscribe(data => {
-      if (data == null)
-        return;
+      this.selectedProducao.id
+    );
 
-      this.resumoAnual = data;
-
-      this.valorTotalArea = FormatUtils.formatarArea(this.resumoAnual.areaColhidaTotal);
-      this.valorTotalDinheiro = FormatUtils.formatarDinheiro(this.resumoAnual.valorProducaoTotal);
-      this.valorTotalPeso = FormatUtils.formatarPeso(this.resumoAnual.quantidadeProduzidaTotal);
-    })
-
-    this.apiService.getResumoPorEstado(
+    const resumoPorEstado$ = this.apiService.getResumoPorEstado(
       this.selectedAno,
       this.selectedRegiao.id,
       this.selectedTipoLavoura.id,
       this.selectedProducao.id
-    ).subscribe((dados: ResumoEstadoDTO[]) => {
-      this.resumoPorEstado = dados;
+    );
 
-      this.estados = dados.map(d => d.siglaUf);
-      this.producao = dados.map(d => d.quantidadeProduzidaTotal);
+    this.apiService.getRanking(
+      this.selectedAno,
+      0, // Unidades Federativas = 0
+      this.selectedRegiao.id,
+      this.selectedUnidadeFederativa.id,
+      this.selectedTipoLavoura.id,
+      this.selectedProducao.id
+    ).subscribe(data => {
+      this.rankingUfs = data;
     });
 
-    this.loading = false;
+    this.apiService.getRanking(
+      this.selectedAno,
+      1, // Região = 1
+      this.selectedRegiao.id,
+      this.selectedUnidadeFederativa.id,
+      this.selectedTipoLavoura.id,
+      this.selectedProducao.id
+    ).subscribe(data => {
+      this.rankingRegioes = data;
+    });
+
+    this.apiService.getRanking(
+      this.selectedAno,
+      2, // Produção Permanente = 2
+      this.selectedRegiao.id,
+      this.selectedUnidadeFederativa.id,
+      this.selectedTipoLavoura.id,
+      this.selectedProducao.id
+    ).subscribe(data => {
+      this.rankingProducoesPermanentes = data;
+    });
+
+    this.apiService.getRanking(
+      this.selectedAno,
+      3, // Produção Temporária = 3
+      this.selectedRegiao.id,
+      this.selectedUnidadeFederativa.id,
+      this.selectedTipoLavoura.id,
+      this.selectedProducao.id
+    ).subscribe(data => {
+      this.rankingProducoesTemporarias = data;
+    });
+
+    forkJoin([resumoAnual$, resumoPorEstado$]).subscribe(
+      ([resumoAnualData, resumoPorEstadoData]) => {
+        // Atualiza cards
+        if (resumoAnualData) {
+          this.resumoAnual = resumoAnualData;
+          this.valorTotalArea = FormatUtils.formatarArea(this.resumoAnual.areaColhidaTotal);
+          this.valorTotalDinheiro = FormatUtils.formatarDinheiro(this.resumoAnual.valorProducaoTotal);
+          this.valorTotalPeso = FormatUtils.formatarPeso(this.resumoAnual.quantidadeProduzidaTotal);
+        }
+
+        // Atualiza gráfico/mapa
+        this.resumoPorEstado = resumoPorEstadoData;
+
+        this.loading = false;
+      },
+      (error) => {
+        console.error(error);
+        this.loading = false;
+      }
+    );
+
   }
 
   onFiltersApplied(
@@ -154,7 +202,6 @@ export class DashboardPageComponent implements OnInit {
     this.selectedUnidadeFederativa = filters.uf;
     this.selectedProducao = filters.producao;
 
-    // chama o loadDashboard com os valores do filter-bar
     this.loadDashboard();
   }
 }

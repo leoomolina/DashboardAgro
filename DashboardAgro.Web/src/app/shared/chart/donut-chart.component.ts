@@ -1,5 +1,5 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { ChartData, ChartType, ChartOptions } from 'chart.js';
+import { AfterViewInit, Component, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
+import { ChartData, ChartOptions } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
 
 interface Lavoura {
@@ -17,6 +17,8 @@ interface Lavoura {
 export class DonutChartComponent implements OnChanges {
   @Input() lavouras: Lavoura[] = [];
   @Input() tipo: 'area' | 'valorProducao' = 'area';
+  @ViewChild(BaseChartDirective) chart?: BaseChartDirective;
+
 
   public donutChartData: ChartData<'doughnut'> = {
     labels: [],
@@ -53,5 +55,7 @@ export class DonutChartComponent implements OnChanges {
         },
       ];
     }
+
+    setTimeout(() => this.chart?.update(), 0);
   }
 }

@@ -1,0 +1,12 @@
+  <div class="border rounded-2xl shadow-sm p-4 flex flex-col gap-3 w-full border-yellow-600">
+    <div class="flex justify-between items-center">
+      <h2 class="font-semibold text-gray-700 text-lg">{{ descricao }}</h2>
+    </div>
+
+    <div class="text-sm text-gray-600 space-y-1">
+      <p><strong>Área:</strong> {{ formatarArea(area) }}</p>
+      <p><strong>Produção:</strong> {{ formatarPeso(quantidadeProduzida) }}</p>
+      <p><strong>Valor:</strong> {{ formatarDinheiro(valorProducao) }}</p>
+      <p><strong>Produtividade:</strong> {{ formatarPercentual(produtividade) }}</p>
+    </div>
+  </div> 

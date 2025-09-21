@@ -97,7 +97,7 @@ export class DashboardFiltersComponent implements OnInit {
 
   private checkInitialized() {
     // só emite quando todos os filtros estiverem definidos
-    if (this.selectedAno && this.selectedTipoLavoura && this.selectedRegiao && this.selectedUnidadeFederativa) {
+    if (this.selectedAno && this.selectedTipoLavoura && this.selectedRegiao && this.selectedUnidadeFederativa && this.selectedProducao) {
       this.initialized.emit({
         ano: this.selectedAno,
         tipoLavoura: this.selectedTipoLavoura,
