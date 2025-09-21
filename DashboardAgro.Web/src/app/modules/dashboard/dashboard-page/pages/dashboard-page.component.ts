@@ -17,6 +17,7 @@ import { RankingItemDTO } from '../../../../core/models/ranking-dto';
 import { ProducaoDTO } from '../../../../core/models/producao-dto';
 import { forkJoin } from 'rxjs';
 import { AnalisePorRegiaoComponent } from '../../components/analise-por-regiao/analise-por-regiao.component';
+import { TituloCard } from '../../../../shared/title-card/titulo-card.component';
 
 @Component({
   selector: 'dashboard-page',
@@ -30,6 +31,7 @@ import { AnalisePorRegiaoComponent } from '../../components/analise-por-regiao/a
     ComparacaoLavourasCard,
     RankingComponent,
     AnalisePorRegiaoComponent,
+    TituloCard
   ],
   templateUrl: './dashboard-page.component.html',
   styleUrls: ['./dashboard-page.component.css']
@@ -41,16 +43,20 @@ export class DashboardPageComponent implements OnInit {
   selectedTipoLavoura!: TipoLavouraDTO;
   selectedProducao!: ProducaoDTO;
 
-  valorTotalArea!: string;
+  valorTotalAreaPlantada!: string;
+  valorTotalAreaColhida!: string;
   valorTotalDinheiro!: string;
   valorTotalPeso!: string;
+  totalProdutividade!: string;
 
   resumoAnual: ResumoAnualDTO =
     {
       ano: new Date().getFullYear(),
       areaColhidaTotal: 0,
+      areaPlantadaTotal: 0,
       valorProducaoTotal: 0,
       quantidadeProduzidaTotal: 0,
+      produtividade: 0,
       lavouras: [
         {
           descricao: "Lavoura Permanente",
@@ -159,12 +165,13 @@ export class DashboardPageComponent implements OnInit {
         // Atualiza cards
         if (resumoAnualData) {
           this.resumoAnual = resumoAnualData;
-          this.valorTotalArea = FormatUtils.formatarArea(this.resumoAnual.areaColhidaTotal);
+          this.valorTotalAreaColhida = FormatUtils.formatarArea(this.resumoAnual.areaColhidaTotal);
+          this.valorTotalAreaPlantada = FormatUtils.formatarArea(this.resumoAnual.areaPlantadaTotal);
           this.valorTotalDinheiro = FormatUtils.formatarDinheiro(this.resumoAnual.valorProducaoTotal);
           this.valorTotalPeso = FormatUtils.formatarPeso(this.resumoAnual.quantidadeProduzidaTotal);
+          this.totalProdutividade = FormatUtils.formatNumber(this.resumoAnual.produtividade) + 't/ha';
         }
 
-        // Atualiza gráfico/mapa
         this.resumoPorEstado = resumoPorEstadoData;
 
         this.loading = false;

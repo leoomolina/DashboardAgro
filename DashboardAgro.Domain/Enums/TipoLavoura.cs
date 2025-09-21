@@ -3,6 +3,7 @@
     public enum TipoLavoura
     {
         Permanente = 0,
-        Temporaria = 1
+        Temporaria = 1,
+        Todas = 99
     }
 }

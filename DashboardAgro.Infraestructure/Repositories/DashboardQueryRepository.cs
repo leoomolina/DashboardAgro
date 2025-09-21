@@ -56,7 +56,7 @@ namespace DashboardAgro.Infraestructure.Repositories
                     break;
                 case Agrupamento.Regiao:
                     var queryRegiaoTemp = _context.DadosLavouraTemporaria
-                        .Where(e => e.Ano == ano
+                        .Where(e => e.Ano == ano && e.Producao.TipoLavoura == TipoLavoura.Temporaria
                                     && (idRegiao == 0 || e.Uf.IdRegiao == idRegiao)
                                     && (idUf == 0 || e.IdUf == idUf)
                                     && (idProducao == 0 || e.IdProducao == idProducao))
@@ -68,7 +68,7 @@ namespace DashboardAgro.Infraestructure.Repositories
                         });
 
                     var queryRegiaoPerm = _context.DadosLavouraPermanente
-                        .Where(e => e.Ano == ano
+                        .Where(e => e.Ano == ano && e.Producao.TipoLavoura == TipoLavoura.Permanente
                                     && (idRegiao == 0 || e.Uf.IdRegiao == idRegiao)
                                     && (idUf == 0 || e.IdUf == idUf)
                                     && (idProducao == 0 || e.IdProducao == idProducao))
@@ -93,32 +93,34 @@ namespace DashboardAgro.Infraestructure.Repositories
                     break;
                 case Agrupamento.ProducaoPermanente:
                     query = _context.DadosLavouraPermanente
-                        .Where(e => e.Ano == ano
+                        .Where(e => e.Ano == ano && e.Producao.TipoLavoura == TipoLavoura.Permanente
                                     && (idRegiao == 0 || e.Uf.IdRegiao == idRegiao)
                                     && (idUf == 0 || e.IdUf == idUf)
                                     && (idProducao == 0 || e.IdProducao == idProducao))
-                        .OrderByDescending(e => e.QuantidadeProduzida)
+                        .GroupBy(r => r.Producao)
                         .Select(e => new RankingDashboard
                         {
-                            Descricao = e.Producao.Descricao,
-                            Valor = e.QuantidadeProduzida,
+                            Descricao = e.Key.Descricao,
+                            Valor = e.Sum(r => r.QuantidadeProduzida),
                             TipoRanking = tipoRanking
                         })
+                        .OrderByDescending(e => e.Valor)
                         .Take(5);
                     break;
                 case Agrupamento.ProducaoTemporaria:
                     query = _context.DadosLavouraTemporaria
-                        .Where(e => e.Ano == ano
+                        .Where(e => e.Ano == ano && e.Producao.TipoLavoura == TipoLavoura.Temporaria
                                     && (idRegiao == 0 || e.Uf.IdRegiao == idRegiao)
                                     && (idUf == 0 || e.IdUf == idUf)
                                     && (idProducao == 0 || e.IdProducao == idProducao))
-                        .OrderByDescending(e => e.QuantidadeProduzida)
+                        .GroupBy(r => r.Producao)
                         .Select(e => new RankingDashboard
                         {
-                            Descricao = e.Producao.Descricao,
-                            Valor = e.QuantidadeProduzida,
+                            Descricao = e.Key.Descricao,
+                            Valor = e.Sum(r => r.QuantidadeProduzida),
                             TipoRanking = tipoRanking
                         })
+                        .OrderByDescending(e => e.Valor)
                         .Take(5);
                     break;
             }
@@ -130,12 +132,16 @@ namespace DashboardAgro.Infraestructure.Repositories
     int ano, int idRegiao, int idUf, int idProducao, TipoLavoura? tipoLavoura)
         {
             var queryPerm = _context.DadosLavouraPermanente
-                .Where(r => r.Ano == ano
+                .Where(r => r.Ano == ano && r.Producao.TipoLavoura == TipoLavoura.Permanente
                             && (idRegiao == 0 || r.Uf.IdRegiao == idRegiao)
                             && (idUf == 0 || r.IdUf == idUf)
                             && (idProducao == 0 || r.IdProducao == idProducao));
 
-            var queryTemp = _context.DadosLavouraTemporaria.Where(r => r.Ano == ano);
+            var queryTemp = _context.DadosLavouraTemporaria
+                .Where(r => r.Ano == ano && r.Producao.TipoLavoura == TipoLavoura.Temporaria
+                            && (idRegiao == 0 || r.Uf.IdRegiao == idRegiao)
+                            && (idUf == 0 || r.IdUf == idUf)
+                            && (idProducao == 0 || r.IdProducao == idProducao));
 
             IQueryable<ResumoRegiao>? resumoQuery = null;
 

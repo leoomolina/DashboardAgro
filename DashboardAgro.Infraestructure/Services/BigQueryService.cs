@@ -74,7 +74,7 @@ GROUP BY
                         (row[fieldColheita] is null ? 0 : Convert.ToInt64(row[fieldColheita])) : 0,
                         QuantidadeProduzida = row["quantidade_produzida"] is null ? 0 : Convert.ToDecimal(row["quantidade_produzida"]),
                         ValorProducao = row["valor_producao"] is null ? 0 : Convert.ToDecimal(row["valor_producao"]),
-                        Tipo = TipoLavoura.Permanente,
+                        Tipo = tipoLavoura,
                         UF = new UnidadeFederativa
                         {
                             SiglaUF = (string)row["sigla_uf"]

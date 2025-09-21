@@ -1,17 +1,10 @@
 <div class="bg-white rounded-lg shadow p-4 mb-4" *ngIf="!isLoading">
-  <h4 class="text-lg font-semibold">
-    <span>Comparação: Lavouras Temporárias vs Permanentes</span>
-  </h4>
-  <p data-slot="card-description" class="">
-    Análise comparativa entre tipos de cultivos agrícolas
-  </p>
+  <titulo-card [titulo]="titulo" [subTitulo]="subTitulo"></titulo-card>
 
   <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
     <div class="space-y-3">
       <div *ngFor="let lavoura of lavouras" class="space-y-3 border-2 border-gray-100 p-4 my-4 rounded-lg">
-        <h4 class="text-xl font-semibold flex items-center space-x-2 mb-4">
-          <span>{{ lavoura.descricao }}</span>
-        </h4>
+        <titulo-card [titulo]="lavoura.descricao"></titulo-card>
 
         <div class="flex justify-between items-center">
           <span class="text-base text-muted-foreground text-gray-500">Área Colhida</span>
@@ -53,5 +46,5 @@
       </app-donut-chart>
     </div>
   </div>
+  <app-loader [isLoading]="isLoading"></app-loader>
 </div>
-<app-loader [isLoading]="isLoading"></app-loader>

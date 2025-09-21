@@ -2,11 +2,12 @@ import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RankingItemDTO } from '../../../../core/models/ranking-dto';
 import { formatarPeso } from '../../../../shared/utils/format-utils';
+import { TituloCard } from '../../../../shared/title-card/titulo-card.component';
 
 @Component({
   selector: 'app-ranking',
   templateUrl: './ranking.component.html',
-  imports: [CommonModule]
+  imports: [CommonModule, TituloCard]
 })
 export class RankingComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
@@ -15,6 +16,7 @@ export class RankingComponent implements OnChanges {
     });
   }
   @Input() titulo: string = 'Ranking';
+  @Input() subTitulo: string = '';
   @Input() itens: RankingItemDTO[] = [];
 
   formatarPeso = formatarPeso;

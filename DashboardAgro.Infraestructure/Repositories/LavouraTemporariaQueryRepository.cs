@@ -91,6 +91,7 @@ namespace DashboardAgro.Infraestructure.Repositories
                     Ano = ano,
                     AreaColhida = g.Sum(x => x.AreaColhida),
                     QuantidadeProduzida = g.Sum(x => x.QuantidadeProduzida),
+                    AreaPlantadaXDestinadaColheita = g.Sum(x => x.AreaPlantada),
                     ValorProducao = g.Sum(x => x.ValorProducao),
                     DescricaoRegiao = g.First().Uf.Regiao.Descricao,
                 })
@@ -117,6 +118,7 @@ namespace DashboardAgro.Infraestructure.Repositories
                     SiglaUf = g.First().Uf.SiglaUF,
                     TipoLavoura = TipoLavoura.Temporaria,
                     Ano = ano,
+                    AreaPlantadaXDestinadaColheita = g.Sum(x => x.AreaPlantada),
                     AreaColhida = g.Sum(x => x.AreaColhida),
                     QuantidadeProduzida = g.Sum(x => x.QuantidadeProduzida),
                     ValorProducao = g.Sum(x => x.ValorProducao),

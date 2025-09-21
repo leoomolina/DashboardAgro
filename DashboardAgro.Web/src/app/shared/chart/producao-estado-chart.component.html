@@ -1,8 +1,14 @@
-<div class="bg-white rounded-lg shadow p-4 mb-4" >
-  <h3 class="text-lg font-semibold" *ngIf="!isLoading">Produção por Estado</h3>
-  <div class="block w-11/12" *ngIf="!isLoading">
-    <canvas baseChart [data]="barChartData" [options]="barChartOptions" [type]="barChartType">
+<div class="bg-white rounded-lg shadow p-4 mb-4 flex flex-col h-full">
+  <titulo-card titulo="Produção por Estado" subTitulo="Quantidade produzida por estado" *ngIf="!isLoading"></titulo-card>
+  
+  <!-- Container do canvas preenchendo o espaço disponível -->
+  <div class="flex-1 w-full">
+    <canvas baseChart
+            [data]="barChartData"
+            [options]="barChartOptions"
+            [type]="barChartType">
     </canvas>
   </div>
+
   <app-loader [isLoading]="isLoading"></app-loader>
 </div>

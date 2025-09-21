@@ -1,6 +1,7 @@
-import { AfterViewInit, Component, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
 import { ChartData, ChartOptions } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
+import { formatarArea, formatarDinheiro } from '../utils/format-utils';
 
 interface Lavoura {
   descricao: string;
@@ -19,7 +20,6 @@ export class DonutChartComponent implements OnChanges {
   @Input() tipo: 'area' | 'valorProducao' = 'area';
   @ViewChild(BaseChartDirective) chart?: BaseChartDirective;
 
-
   public donutChartData: ChartData<'doughnut'> = {
     labels: [],
     datasets: [{ data: [], backgroundColor: [] }],
@@ -29,10 +29,19 @@ export class DonutChartComponent implements OnChanges {
     responsive: true,
     plugins: {
       legend: { position: 'bottom' },
+      tooltip: {
+        callbacks: {
+          label: (tooltipItem) => {
+            const value = tooltipItem.raw as number;
+            return this.tipo === 'area'
+              ? formatarArea(value)
+              : formatarDinheiro(value);
+          },
+        },
+      },
     },
   };
 
-  // Tipo literal fixo 'doughnut'
   public donutChartType: 'doughnut' = 'doughnut';
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -40,21 +49,16 @@ export class DonutChartComponent implements OnChanges {
 
     this.donutChartData.labels = this.lavouras.map(l => l.descricao);
 
-    if (this.tipo === 'area') {
-      this.donutChartData.datasets = [
-        {
-          data: this.lavouras.map(l => l.areaColhida),
-          backgroundColor: ['#4f46e5', '#f59e0b', '#10b981', '#ef4444', '#3b82f6'],
-        },
-      ];
-    } else {
-      this.donutChartData.datasets = [
-        {
-          data: this.lavouras.map(l => l.valorProducao),
-          backgroundColor: ['#4f46e5', '#f59e0b', '#10b981', '#ef4444', '#3b82f6'],
-        },
-      ];
-    }
+    const dataValues = this.lavouras.map(l =>
+      this.tipo === 'area' ? l.areaColhida : l.valorProducao
+    );
+
+    this.donutChartData.datasets = [
+      {
+        data: dataValues,
+        backgroundColor: ['#4f46e5', '#f59e0b', '#10b981', '#ef4444', '#3b82f6'],
+      },
+    ];
 
     setTimeout(() => this.chart?.update(), 0);
   }

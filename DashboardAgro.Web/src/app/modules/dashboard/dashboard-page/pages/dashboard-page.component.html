@@ -9,8 +9,11 @@
   <filter-bar (initialized)="onFilterBarInitialized($event)" (filtersApplied)="onFiltersApplied($event)">
   </filter-bar>
 
-  <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
-    <app-card [title]="'Área Total Colhida'" [content]="valorTotalArea" [isLoading]="loading">
+  <div class="grid grid-cols-1 md:grid-cols-5 gap-4 mb-4">
+    <app-card [title]="'Área Total Plantada'" [content]="valorTotalAreaPlantada" [isLoading]="loading">
+    </app-card>
+
+    <app-card [title]="'Área Total Colhida'" [content]="valorTotalAreaColhida" [isLoading]="loading">
     </app-card>
 
     <app-card [title]="'Quantidade Produzida'" [content]="valorTotalPeso" [isLoading]="loading">
@@ -18,40 +21,48 @@
 
     <app-card [title]="'Valor da Produção'" [content]="valorTotalDinheiro" [isLoading]="loading">
     </app-card>
+
+    <app-card [title]="'Produtividade'" [content]="totalProdutividade" [isLoading]="loading">
+    </app-card>
   </div>
 
   <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
     <app-producao-estado-chart [estados]="estados" [producaoTemporaria]="producaoTemporaria"
-      [producaoPermanente]="producaoPermanente">
+      [resumoPorEstado]="resumoPorEstado" [producaoPermanente]="producaoPermanente" [isLoading]="loading">
     </app-producao-estado-chart>
 
-    <div class="bg-white rounded-lg  p-4 mb-4">
-      <h3 class="text-lg font-semibold">Produção por Estado</h3>
+    <div class="bg-white rounded-lg p-4 mb-4">
+      <titulo-card titulo="Mapa de Produção Agrícola por Estado"
+        subTitulo="Distribuição da Produção por estados brasileiros"></titulo-card>
       <div class="p-4">
         <app-mapa-brasil [dados]="resumoPorEstado"></app-mapa-brasil>
       </div>
     </div>
   </div>
-  <app-comparacao-lavouras-card [lavouras]="resumoAnual.lavouras" [isLoading]="loading"></app-comparacao-lavouras-card>
 
-  <app-analise-por-regiao [selectedAno]="selectedAno" [selectedProducao]="selectedProducao" [selectedUnidadeFederativa]="selectedUnidadeFederativa" [selectedRegiao]="selectedRegiao">
+  <app-comparacao-lavouras-card titulo="Comparação: Lavouras Temporárias 🆚 Permanentes"
+    subTitulo="Análise comparativa entre tipos de cultivos agrícolas" [lavouras]="resumoAnual.lavouras"
+    [isLoading]="loading"></app-comparacao-lavouras-card>
+
+  <app-analise-por-regiao [selectedAno]="selectedAno" [selectedProducao]="selectedProducao"
+    [selectedUnidadeFederativa]="selectedUnidadeFederativa" [selectedRegiao]="selectedRegiao">
   </app-analise-por-regiao>
 
 
   <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
-    <div class="grid-cols-2 md:grid-cols-4">
+    <app-ranking titulo="🏆 Ranking por Região" subTitulo="Regiões com mais Quantidade Produzida"
+      [itens]="rankingRegioes">
+    </app-ranking>
 
-    </div>
-    <div class="grid">
+    <app-ranking titulo="🏆 Ranking por Produções Temporária"
+      subTitulo="Produções Temporárias com mais Quantidade Produzida" [itens]="rankingProducoesTemporarias">
+    </app-ranking>
 
-    </div>
-    <div class="grid">
-      <app-ranking titulo="Ranking por Região" [itens]="rankingRegioes"></app-ranking>
-      <app-ranking titulo="Ranking por Produções Temporária" [itens]="rankingProducoesTemporarias"></app-ranking>
-    </div>
-    <div class="grid">
-      <app-ranking titulo="Ranking por Estado" [itens]="rankingUfs"></app-ranking>
-      <app-ranking titulo="Ranking por Produções Permanentes" [itens]="rankingProducoesPermanentes"></app-ranking>
-    </div>
+    <app-ranking titulo="🏆 Ranking por Estado" subTitulo="Estados com mais Quantidade Produzida" [itens]="rankingUfs">
+    </app-ranking>
+
+    <app-ranking titulo="🏆 Ranking por Produções Permanentes"
+      subTitulo="Produções Permanentes com mais Quantidade Produzida" [itens]="rankingProducoesPermanentes">
+    </app-ranking>
   </div>
 </div>

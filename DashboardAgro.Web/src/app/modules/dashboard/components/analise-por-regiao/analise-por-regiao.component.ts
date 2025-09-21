@@ -38,7 +38,6 @@ export class AnalisePorRegiaoComponent implements OnChanges {
             this.selectedProducao?.id
         ).subscribe(data => {
             this.resumosPorRegiao = data;
-            console.log(this.resumosPorRegiao);
         });
     }
 

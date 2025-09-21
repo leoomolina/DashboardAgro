@@ -44,6 +44,7 @@ namespace DashboardAgro.Application.Handlers
             {
                 Ano = request.Ano,
                 AreaColhidaTotal = lavourasPermanente.Sum(s => s.AreaColhida) + lavourasTemporaria.Sum(s => s.AreaColhida),
+                AreaPlantadaTotal = lavourasPermanente.Sum(s => s.AreaPlantadaXDestinadaColheita) + lavourasTemporaria.Sum(s => s.AreaPlantadaXDestinadaColheita),
                 QuantidadeProduzidaTotal = lavourasPermanente.Sum(s => s.QuantidadeProduzida) + lavourasTemporaria.Sum(s => s.QuantidadeProduzida),
                 ValorProducaoTotal = lavourasPermanente.Sum(s => s.ValorProducao) + lavourasTemporaria.Sum(s => s.ValorProducao),
                 Lavouras = lavourasList

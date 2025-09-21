@@ -71,22 +71,17 @@ namespace DashboardAgro.Infraestructure.Repositories
         public async Task<IEnumerable<ResumoLavouraAno>> GetResumoAnualLavouraPermanenteAsync(int ano, int idRegiao, int idUf, int idProducao)
         {
             var query = _context.DadosLavouraPermanente
-                .Where(d => d.Ano == ano);
-
-            if (idUf > 0)
-                query = query.Where(d => d.IdUf == idUf);
-
-            if (idRegiao > 0)
-                query = query.Where(d => d.Uf.IdRegiao == idRegiao);
-
-            if (idProducao > 0)
-                query = query.Where(d => d.Producao.Id == idProducao);
+                .Where(r => r.Ano == ano && r.Producao.TipoLavoura == Domain.Enums.TipoLavoura.Permanente
+                            && (idRegiao == 0 || r.Uf.IdRegiao == idRegiao)
+                            && (idUf == 0 || r.IdUf == idUf)
+                            && (idProducao == 0 || r.IdProducao == idProducao));
 
             return await query.GroupBy(d => new { d.IdUf })
                 .Select(g => new ResumoLavouraAno
                 {
                     SiglaUf = g.First().Uf.SiglaUF,
                     Ano = ano,
+                    AreaPlantadaXDestinadaColheita = g.Sum(x => x.AreaDestinadaColheita),
                     AreaColhida = g.Sum(x => x.AreaColhida),
                     QuantidadeProduzida = g.Sum(x => x.QuantidadeProduzida),
                     ValorProducao = g.Sum(x => x.ValorProducao),
@@ -99,16 +94,10 @@ namespace DashboardAgro.Infraestructure.Repositories
         public async Task<IEnumerable<ResumoLavouraAno>> GetResumoAnualByLavouraAsync(int ano, int idRegiao, int idUf, int idProducao)
         {
             var query = _context.DadosLavouraPermanente
-                .Where(d => d.Ano == ano && d.IdProducao == idProducao);
-
-            if (idUf > 0)
-                query = query.Where(d => d.IdUf == idUf);
-
-            if (idRegiao > 0)
-                query = query.Where(d => d.Uf.IdRegiao == idRegiao);
-
-            if (idProducao > 0)
-                query = query.Where(d => d.Producao.Id == idProducao);
+                .Where(r => r.Ano == ano && r.IdProducao == idProducao && r.Producao.TipoLavoura == Domain.Enums.TipoLavoura.Permanente
+                            && (idRegiao == 0 || r.Uf.IdRegiao == idRegiao)
+                            && (idUf == 0 || r.IdUf == idUf)
+                            && (idProducao == 0 || r.IdProducao == idProducao));
 
             return await query.GroupBy(d => new { d.IdUf })
                 .Select(g => new ResumoLavouraAno
@@ -116,6 +105,7 @@ namespace DashboardAgro.Infraestructure.Repositories
                     SiglaUf = g.First().Uf.SiglaUF,
                     Ano = ano,
                     AreaColhida = g.Sum(x => x.AreaColhida),
+                    AreaPlantadaXDestinadaColheita = g.Sum(x => x.AreaDestinadaColheita),
                     QuantidadeProduzida = g.Sum(x => x.QuantidadeProduzida),
                     ValorProducao = g.Sum(x => x.ValorProducao),
                     DescricaoRegiao = g.First().Uf.Regiao.Descricao,

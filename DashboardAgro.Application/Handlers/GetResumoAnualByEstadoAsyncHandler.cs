@@ -27,34 +27,35 @@ namespace DashboardAgro.Application.Handlers
                 ? await _repositoryLavouraTemporaria.GetResumoAnualLavouraTemporariaAsync(request.Ano, request.IdRegiao, 0, request.IdProducao)
                 : [];
 
-            List<LavouraDTO> lavourasList = [.. lavourasPermanente
-                .Concat(lavourasTemporaria)
-                .GroupBy(g => new { g.Ano, g.TipoLavoura })
-                .Select(l => new LavouraDTO
-                {
-                    Descricao = l.Key.TipoLavoura == TipoLavoura.Permanente ? "Lavoura Permanente" : "Lavoura Temporária",
-                    TipoLavoura = l.Key.TipoLavoura,
-                    AreaColhida = l.Sum(r => r.AreaColhida),
-                    QuantidadeProduzida = l.Sum(r => r.QuantidadeProduzida),
-                    ValorProducao = l.Sum(r => r.ValorProducao),
-                    AreaPlantadaXDestinadaColheita = l.Sum(r => r.AreaPlantadaXDestinadaColheita),
-                })];
+            var lavouras = lavourasPermanente.Concat(lavourasTemporaria);
 
-            return [.. lavourasPermanente
-                .Concat(lavourasTemporaria)
+            return lavouras
                 .GroupBy(g => new { g.Ano, g.SiglaUf, g.DescricaoRegiao })
                 .Select(r => new ResumoAnoDTO
                 {
                     Ano = r.Key.Ano,
                     SiglaUf = r.Key.SiglaUf,
                     DescricaoRegiao = r.Key.DescricaoRegiao,
+                    AreaPlantadaTotal = r.Sum(s => s.AreaPlantadaXDestinadaColheita),
                     AreaColhidaTotal = r.Sum(s => s.AreaColhida),
                     QuantidadeProduzidaTotal = r.Sum(s => s.QuantidadeProduzida),
                     ValorProducaoTotal = r.Sum(s => s.ValorProducao),
-                    Lavouras = lavourasList
-                })
-                .OrderByDescending(o => o.QuantidadeProduzidaTotal)];
 
+                    Lavouras = [.. r
+                        .GroupBy(l => l.TipoLavoura)
+                        .Select(l => new LavouraDTO
+                        {
+                            Descricao = l.Key == TipoLavoura.Permanente ? "Lavoura Permanente" : "Lavoura Temporária",
+                            TipoLavoura = l.Key,
+                            AreaColhida = l.Sum(x => x.AreaColhida),
+                            QuantidadeProduzida = l.Sum(x => x.QuantidadeProduzida),
+                            ValorProducao = l.Sum(x => x.ValorProducao),
+                            AreaPlantadaXDestinadaColheita = l.Sum(x => x.AreaPlantadaXDestinadaColheita),
+                        })]
+                })
+                .OrderByDescending(o => o.QuantidadeProduzidaTotal)
+                .ToList();
         }
+
     }
 }

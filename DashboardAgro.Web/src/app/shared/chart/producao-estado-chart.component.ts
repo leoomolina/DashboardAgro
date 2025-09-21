@@ -4,11 +4,13 @@ import { BaseChartDirective } from 'ng2-charts';
 import { ChartOptions, ChartConfiguration } from 'chart.js';
 import { formatarPeso } from '../../shared/utils/format-utils';
 import { LoaderComponent } from '../loader/loader.component';
+import { ResumoEstadoDTO } from '../../core/models/resumo-estado.dto';
+import { TituloCard } from '../title-card/titulo-card.component';
 
 @Component({
   selector: 'app-producao-estado-chart',
   standalone: true,
-  imports: [CommonModule, BaseChartDirective, LoaderComponent],
+  imports: [CommonModule, BaseChartDirective, LoaderComponent, TituloCard],
   templateUrl: './producao-estado-chart.component.html'
 })
 export class ProducaoEstadoChartComponent implements OnChanges {
@@ -16,6 +18,7 @@ export class ProducaoEstadoChartComponent implements OnChanges {
   @Input() producaoTemporaria: number[] = [];
   @Input() producaoPermanente: number[] = [];
   @Input() isLoading: boolean = false;
+  @Input() resumoPorEstado: ResumoEstadoDTO[] = [];
 
   public barChartType: 'bar' = 'bar';
 
@@ -64,26 +67,42 @@ export class ProducaoEstadoChartComponent implements OnChanges {
   };
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['estados'] || changes['producao']) {
-      this.barChartData = {
-        labels: this.estados,
-        datasets: [
-          {
-            data: this.producaoPermanente,
-            label: 'Produção Permanente',
-            backgroundColor: 'rgba(79, 70, 229, 0.7)',
-            borderColor: 'rgba(79, 70, 229, 1)',
-            borderWidth: 1
-          },
-          {
-            data: this.producaoTemporaria,
-            label: 'Produção Temporária',
-            backgroundColor: 'rgba(245, 158, 11, 0.7)',
-            borderColor: 'rgba(245, 158, 11, 1)',
-            borderWidth: 1
-          }
-        ]
-      };
+    if (this.resumoPorEstado?.length) {
+      this.montarGrafico();
     }
+  }
+
+  private montarGrafico(): void {
+    const labels = this.resumoPorEstado.map(e => e.siglaUf);
+
+    const dataPermanente = this.resumoPorEstado.map(e => {
+      const lavoura = e.lavouras.find(l => l.tipoLavoura === 0);
+      return lavoura ? lavoura.quantidadeProduzida : 0;
+    });
+
+    const dataTemporaria = this.resumoPorEstado.map(e => {
+      const lavoura = e.lavouras.find(l => l.tipoLavoura === 1);
+      return lavoura ? lavoura.quantidadeProduzida : 0;
+    });
+
+    this.barChartData = {
+      labels,
+      datasets: [
+        {
+          data: dataPermanente,
+          label: 'Lavoura Permanente',
+          backgroundColor: 'rgba(79, 70, 229, 0.7)',
+          borderColor: 'rgba(79, 70, 229, 1)',
+          borderWidth: 1
+        },
+        {
+          data: dataTemporaria,
+          label: 'Lavoura Temporária',
+          backgroundColor: 'rgba(245, 158, 11, 0.7)',
+          borderColor: 'rgba(245, 158, 11, 1)',
+          borderWidth: 1
+        }
+      ]
+    };
   }
 }
