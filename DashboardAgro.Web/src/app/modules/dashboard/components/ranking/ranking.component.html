@@ -1,0 +1,36 @@
+<div class="w-full max-w-md mx-auto bg-white rounded-xl shadow p-4">
+  <h2 class="text-lg font-bold mb-3">🏆 {{ titulo }}</h2>
+
+  <ul class="divide-y divide-gray-200">
+    <li
+      *ngFor="let item of itens"
+      class="flex items-center justify-between py-2"
+    >
+      <div class="flex items-center gap-2">
+        <!-- Posição -->
+        <span
+          class="w-6 h-6 flex items-center justify-center text-xs rounded-full font-bold"
+          [ngClass]="getBadgeColor(item.posicao)"
+        >
+          {{ item.posicao }}
+        </span>
+
+        <!-- Nome -->
+        <span class="font-medium">{{ item.nome }}</span>
+
+        <!-- Etiqueta colorida -->
+        <span
+          class="text-sm px-1.5 mx-2 py-1 rounded-lg text-white" *ngIf="item.etiqueta !== ''"
+          [style.backgroundColor]="getEtiquetaColor(item.etiqueta)"
+        >
+          {{ item.etiqueta }}
+        </span>
+      </div>
+
+      <!-- Valor -->
+      <span class="text-sm font-semibold text-gray-700">
+        {{ item.valor }}
+      </span>
+    </li>
+  </ul>
+</div>

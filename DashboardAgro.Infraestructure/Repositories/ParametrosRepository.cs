@@ -43,5 +43,15 @@ namespace DashboardAgro.Infraestructure.Repositories
                 }).ToListAsync();
             }
         }
+
+        public async Task<IEnumerable<Producao>> GetAllProducoes()
+        {
+            return await _context.Producao.Select(p => new Producao
+            {
+                Id = p.Id,
+                Descricao = p.Descricao,
+                TipoLavoura = p.TipoLavoura
+            }).OrderBy(r => r.Descricao).ToListAsync() ;
+        }
     }
 }

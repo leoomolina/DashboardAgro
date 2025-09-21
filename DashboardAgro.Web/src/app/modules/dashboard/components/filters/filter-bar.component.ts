@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { TipoLavouraDTO } from '../../../../core/models/tipo-lavoura.dto';
 import { RegiaoBrasilDTO } from '../../../../core/models/regiao-brasil.dto';
 import { UnidadeFederativaDTO } from '../../../../core/models/unidade-federativa.dto';
+import { ProducaoDTO } from '../../../../core/models/producao-dto';
 
 @Component({
   selector: 'filter-bar',
@@ -14,19 +15,27 @@ import { UnidadeFederativaDTO } from '../../../../core/models/unidade-federativa
   styleUrls: ['./filter-bar.component.css']
 })
 export class DashboardFiltersComponent implements OnInit {
-  @Output() filtersApplied = new EventEmitter<{ ano: number; regiao: RegiaoBrasilDTO; unidadeFederativa?: UnidadeFederativaDTO; tipoLavoura: TipoLavouraDTO; }>();
+  @Output() filtersApplied = new EventEmitter<
+    {
+      ano: number;
+      regiao: RegiaoBrasilDTO;
+      unidadeFederativa?: UnidadeFederativaDTO;
+      tipoLavoura: TipoLavouraDTO;
+      producao: ProducaoDTO
+    }>();
   @Output() initialized = new EventEmitter<any>();
 
   anos: number[] = [];
-  producoes: string[] = [];
   unidadesFederativas: UnidadeFederativaDTO[] = [];
   tiposLavouras: TipoLavouraDTO[] = [];
   regioes: RegiaoBrasilDTO[] = [];
+  producoes: ProducaoDTO[] = [];
 
   selectedAno!: number;
   selectedUnidadeFederativa!: UnidadeFederativaDTO;
   selectedTipoLavoura!: TipoLavouraDTO;
   selectedRegiao!: RegiaoBrasilDTO;
+  selectedProducao!: ProducaoDTO;
 
   loading: boolean = false;
 
@@ -73,6 +82,16 @@ export class DashboardFiltersComponent implements OnInit {
       this.checkInitialized();
     });
 
+    this.apiService.getProducoes().subscribe(data => {
+      if (data == null)
+        return;
+
+      this.producoes = [{ id: -1, descricao: 'Todos' }, ...data];
+      this.selectedProducao = this.producoes[0];
+
+      this.checkInitialized();
+    });
+
     this.loading = false;
   }
 
@@ -83,7 +102,8 @@ export class DashboardFiltersComponent implements OnInit {
         ano: this.selectedAno,
         tipoLavoura: this.selectedTipoLavoura,
         regiao: this.selectedRegiao,
-        uf: this.selectedUnidadeFederativa
+        uf: this.selectedUnidadeFederativa,
+        producao: this.selectedProducao
       });
     }
   }
@@ -93,7 +113,8 @@ export class DashboardFiltersComponent implements OnInit {
       ano: this.selectedAno,
       regiao: this.selectedRegiao,
       unidadeFederativa: this.selectedUnidadeFederativa,
-      tipoLavoura: this.selectedTipoLavoura
+      tipoLavoura: this.selectedTipoLavoura,
+      producao: this.selectedProducao
     });
   }
 }

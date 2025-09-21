@@ -5,7 +5,7 @@ using MediatR;
 
 namespace DashboardAgro.Application.Handlers
 {
-    public class ListarUFsHandler : IRequestHandler<ListarUFsQuery, List<UnidadeFederativaDTO>>
+    public class ListarUFsHandler : IRequestHandler<ListarUFsAsyncQuery, List<UnidadeFederativaDTO>>
     {
         private readonly IParametrosRepository _repository;
         public ListarUFsHandler(IParametrosRepository repository)
@@ -13,7 +13,7 @@ namespace DashboardAgro.Application.Handlers
             _repository = repository;
         }
 
-        public async Task<List<UnidadeFederativaDTO>> Handle(ListarUFsQuery request, CancellationToken cancellationToken)
+        public async Task<List<UnidadeFederativaDTO>> Handle(ListarUFsAsyncQuery request, CancellationToken cancellationToken)
         {
             var queryRegiao = await _repository.GetAllUnidadesFederativas(request.Id);
 

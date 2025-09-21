@@ -6,6 +6,7 @@ import { RegiaoBrasilDTO } from '../models/regiao-brasil.dto';
 import { UnidadeFederativaDTO } from '../models/unidade-federativa.dto';
 import { ResumoAnualDTO } from '../models/resumo-anual.dto';
 import { ResumoEstadoDTO } from '../models/resumo-estado.dto';
+import { ProducaoDTO } from '../models/producao-dto';
 
 @Injectable({
   providedIn: 'root'
@@ -32,16 +33,21 @@ export class ApiService {
     return this.http.get<UnidadeFederativaDTO[]>(`${this.apiBase}/api/parametros/unidades-federativas`);
   }
 
+  getProducoes(): Observable<ProducaoDTO[]> {
+    return this.http.get<ProducaoDTO[]>(`${this.apiBase}/api/parametros/listar-producoes`);
+  }
+
   getResumoAnual(
     ano: number,
     idRegiao: number,
     idUf: number,
-    tipoLavoura: number
+    tipoLavoura: number,
+    idProducao: number
   ): Observable<ResumoAnualDTO> {
     let params = new HttpParams()
       .set('ano', ano.toString());
 
-    if (tipoLavoura != null && tipoLavoura > 0) {
+    if (tipoLavoura != null && tipoLavoura >= 0) {
       params = params.set('tipoLavoura', tipoLavoura.toString());
     }
     if (idUf != null && idUf > 0) {
@@ -50,6 +56,9 @@ export class ApiService {
     if (idRegiao != null && idRegiao > 0) {
       params = params.set('idRegiao', idRegiao.toString());
     }
+    if (idProducao != null && idProducao > 0) {
+      params = params.set('idProducao', idProducao.toString());
+    }
 
     return this.http.get<ResumoAnualDTO>(`${this.apiBase}/api/dashboard/resumo-anual`, { params });
   }
@@ -57,16 +66,20 @@ export class ApiService {
   getResumoPorEstado(
     ano: number,
     idRegiao: number,
-    tipoLavoura: number
+    tipoLavoura: number,
+    idProducao: number
   ): Observable<ResumoEstadoDTO[]> {
     let params = new HttpParams()
       .set('ano', ano.toString());
 
-    if (tipoLavoura != null && tipoLavoura > 0) {
+    if (tipoLavoura != null && tipoLavoura >= 0) {
       params = params.set('tipoLavoura', tipoLavoura.toString());
     }
     if (idRegiao != null && idRegiao > 0) {
       params = params.set('idRegiao', idRegiao.toString());
+    }
+    if (idProducao != null && idProducao > 0) {
+      params = params.set('idProducao', idProducao.toString());
     }
 
     return this.http.get<ResumoEstadoDTO[]>(`${this.apiBase}/api/dashboard/resumo-anual-por-estado`, { params });

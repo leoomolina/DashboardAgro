@@ -68,7 +68,7 @@ namespace DashboardAgro.Infraestructure.Repositories
             .ToListAsync();
         }
 
-        public async Task<IEnumerable<ResumoLavouraAno>> GetResumoAnualLavouraPermanenteAsync(int ano, int idRegiao, int idUf)
+        public async Task<IEnumerable<ResumoLavouraAno>> GetResumoAnualLavouraPermanenteAsync(int ano, int idRegiao, int idUf, int idProducao)
         {
             var query = _context.DadosLavouraPermanente
                 .Where(d => d.Ano == ano);
@@ -78,6 +78,9 @@ namespace DashboardAgro.Infraestructure.Repositories
 
             if (idRegiao > 0)
                 query = query.Where(d => d.Uf.IdRegiao == idRegiao);
+
+            if (idProducao > 0)
+                query = query.Where(d => d.Producao.Id == idProducao);
 
             return await query.GroupBy(d => new { d.IdUf })
                 .Select(g => new ResumoLavouraAno
@@ -103,6 +106,9 @@ namespace DashboardAgro.Infraestructure.Repositories
 
             if (idRegiao > 0)
                 query = query.Where(d => d.Uf.IdRegiao == idRegiao);
+
+            if (idProducao > 0)
+                query = query.Where(d => d.Producao.Id == idProducao);
 
             return await query.GroupBy(d => new { d.IdUf })
                 .Select(g => new ResumoLavouraAno

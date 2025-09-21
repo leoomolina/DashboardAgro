@@ -12,6 +12,9 @@ import { UnidadeFederativaDTO } from '../../../../core/models/unidade-federativa
 import { RegiaoBrasilDTO } from '../../../../core/models/regiao-brasil.dto';
 import { MapaBrasilComponent } from '../../../../shared/map/mapa-brasil.component';
 import { ComparacaoLavourasCard } from '../../components/comparacao-lavouras/comparacao-lavouras.component';
+import { RankingComponent } from '../../components/ranking/ranking.component';
+import { RankingItemDTO } from '../../../../core/models/ranking-dto';
+import { ProducaoDTO } from '../../../../core/models/producao-dto';
 
 @Component({
   selector: 'dashboard-page',
@@ -23,6 +26,7 @@ import { ComparacaoLavourasCard } from '../../components/comparacao-lavouras/com
     ProducaoEstadoChartComponent,
     MapaBrasilComponent,
     ComparacaoLavourasCard,
+    RankingComponent
   ],
   templateUrl: './dashboard-page.component.html',
   styleUrls: ['./dashboard-page.component.css']
@@ -32,6 +36,7 @@ export class DashboardPageComponent implements OnInit {
   selectedRegiao!: RegiaoBrasilDTO;
   selectedUnidadeFederativa!: UnidadeFederativaDTO;
   selectedTipoLavoura!: TipoLavouraDTO;
+  selectedProducao!: ProducaoDTO;
 
   valorTotalArea!: string;
   valorTotalDinheiro!: string;
@@ -70,6 +75,19 @@ export class DashboardPageComponent implements OnInit {
   estados: string[] = [];
   producao: number[] = [];
 
+  rankingEstados: RankingItemDTO[] = [
+    { posicao: 1, nome: 'Mato Grosso', etiqueta: 'Centro-Oeste', valor: '25.000 ha' },
+    { posicao: 2, nome: 'Paraná', etiqueta: 'Sul', valor: '22.000 ha' },
+    { posicao: 3, nome: 'Bahia', etiqueta: 'Nordeste', valor: '20.000 ha' },
+    { posicao: 4, nome: 'São Paulo', etiqueta: 'Sudeste', valor: '18.500 ha' },
+  ];
+
+  rankingCulturas: RankingItemDTO[] = [
+    { posicao: 1, nome: 'Soja', etiqueta: '', valor: '40.000 ha' },
+    { posicao: 2, nome: 'Milho', etiqueta: '', valor: '30.000 ha' },
+    { posicao: 3, nome: 'Café', etiqueta: '', valor: '12.000 ha' },
+  ];
+
   loading: boolean = false;
 
   constructor(private apiService: ApiService) { }
@@ -79,7 +97,13 @@ export class DashboardPageComponent implements OnInit {
   loadDashboard(): void {
     this.loading = true;
 
-    this.apiService.getResumoAnual(this.selectedAno, this.selectedRegiao.id, this.selectedUnidadeFederativa!.id, this.selectedTipoLavoura.id).subscribe(data => {
+    this.apiService.getResumoAnual(
+      this.selectedAno,
+      this.selectedRegiao.id,
+      this.selectedUnidadeFederativa!.id,
+      this.selectedTipoLavoura.id,
+      this.selectedProducao!.id
+    ).subscribe(data => {
       if (data == null)
         return;
 
@@ -90,7 +114,12 @@ export class DashboardPageComponent implements OnInit {
       this.valorTotalPeso = FormatUtils.formatarPeso(this.resumoAnual.quantidadeProduzidaTotal);
     })
 
-    this.apiService.getResumoPorEstado(this.selectedAno, this.selectedRegiao.id, this.selectedTipoLavoura.id).subscribe((dados: ResumoEstadoDTO[]) => {
+    this.apiService.getResumoPorEstado(
+      this.selectedAno,
+      this.selectedRegiao.id,
+      this.selectedTipoLavoura.id,
+      this.selectedProducao.id
+    ).subscribe((dados: ResumoEstadoDTO[]) => {
       this.resumoPorEstado = dados;
 
       this.estados = dados.map(d => d.siglaUf);
@@ -100,11 +129,20 @@ export class DashboardPageComponent implements OnInit {
     this.loading = false;
   }
 
-  onFiltersApplied(filtros: { ano: number; regiao: RegiaoBrasilDTO; unidadeFederativa?: UnidadeFederativaDTO; tipoLavoura: TipoLavouraDTO; }) {
+  onFiltersApplied(
+    filtros:
+      {
+        ano: number;
+        regiao: RegiaoBrasilDTO;
+        unidadeFederativa?: UnidadeFederativaDTO;
+        tipoLavoura: TipoLavouraDTO;
+        producao: ProducaoDTO;
+      }) {
     this.selectedAno = filtros.ano;
     this.selectedRegiao = filtros.regiao;
     this.selectedUnidadeFederativa = filtros.unidadeFederativa!;
     this.selectedTipoLavoura = filtros.tipoLavoura;
+    this.selectedProducao = filtros.producao;
 
     this.loadDashboard();
   }
@@ -114,6 +152,7 @@ export class DashboardPageComponent implements OnInit {
     this.selectedTipoLavoura = filters.tipoLavoura;
     this.selectedRegiao = filters.regiao;
     this.selectedUnidadeFederativa = filters.uf;
+    this.selectedProducao = filters.producao;
 
     // chama o loadDashboard com os valores do filter-bar
     this.loadDashboard();

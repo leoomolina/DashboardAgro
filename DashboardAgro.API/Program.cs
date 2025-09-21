@@ -24,6 +24,7 @@ builder.Services.AddMediatR(cfg =>
     cfg.RegisterServicesFromAssembly(typeof(ListarLavourasTemporariasHandler).Assembly);
     cfg.RegisterServicesFromAssembly(typeof(ListarRegioesHandler).Assembly);
     cfg.RegisterServicesFromAssembly(typeof(ListarAnosDisponiveisAsyncHandler).Assembly);
+    cfg.RegisterServicesFromAssembly(typeof(ListarProducoesAsyncHandler).Assembly);
 });
 
 // Faz o Kestrel escutar todas as interfaces

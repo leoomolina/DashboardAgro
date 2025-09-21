@@ -1,10 +1,8 @@
 ﻿using DashboardAgro.Application.Contracts;
 using DashboardAgro.Application.DTOs;
 using DashboardAgro.Application.Queries;
-using DashboardAgro.Domain.Entities;
 using DashboardAgro.Domain.Enums;
 using MediatR;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace DashboardAgro.Application.Handlers
 {
@@ -22,11 +20,11 @@ namespace DashboardAgro.Application.Handlers
         public async Task<IEnumerable<ResumoAnoDTO>> Handle(GetResumoAnualByEstadoAsyncQuery request, CancellationToken cancellationToken)
         {
             var lavourasPermanente = request.TipoLavoura != TipoLavoura.Temporaria
-                ? await _repositoryLavouraPermanente.GetResumoAnualLavouraPermanenteAsync(request.Ano, request.IdRegiao, 0)
+                ? await _repositoryLavouraPermanente.GetResumoAnualLavouraPermanenteAsync(request.Ano, request.IdRegiao, 0, request.IdProducao)
                 : [];
 
             var lavourasTemporaria = request.TipoLavoura != TipoLavoura.Permanente
-                ? await _repositoryLavouraTemporaria.GetResumoAnualLavouraTemporariaAsync(request.Ano, request.IdRegiao, 0)
+                ? await _repositoryLavouraTemporaria.GetResumoAnualLavouraTemporariaAsync(request.Ano, request.IdRegiao, 0, request.IdProducao)
                 : [];
 
             List<LavouraDTO> lavourasList = [.. lavourasPermanente

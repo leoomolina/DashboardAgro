@@ -6,6 +6,6 @@ namespace DashboardAgro.Application.Contracts
     {
         Task<IEnumerable<Regiao>> GetAllRegiao();
         Task<IEnumerable<UnidadeFederativa>> GetAllUnidadesFederativas(int? idRegiao);
-
+        Task<IEnumerable<Producao>> GetAllProducoes();
     }
 }
