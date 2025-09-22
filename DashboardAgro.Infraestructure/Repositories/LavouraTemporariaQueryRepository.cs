@@ -33,7 +33,7 @@ namespace DashboardAgro.Infraestructure.Repositories
         public async Task<IEnumerable<Lavoura>> GetAllAsync()
         {
             return await _context.Producao
-            .Where(p => p.TipoLavoura == Domain.Enums.TipoLavoura.Temporaria)
+            .Where(p => p.TipoLavoura == TipoLavoura.Temporaria)
             .Select(p => new Lavoura
             {
                 IdProducao = p.Id,
@@ -46,7 +46,7 @@ namespace DashboardAgro.Infraestructure.Repositories
         public async Task<IEnumerable<Lavoura>> GetByAnoAsync(int ano)
         {
             return await _context.DadosLavouraPermanente
-            .Where(p => p.Ano == ano && p.Producao.TipoLavoura == Domain.Enums.TipoLavoura.Temporaria)
+            .Where(p => p.Ano == ano && p.Producao.TipoLavoura == TipoLavoura.Temporaria)
             .Select(p => new Lavoura
             {
                 Ano = p.Ano,
@@ -72,7 +72,7 @@ namespace DashboardAgro.Infraestructure.Repositories
         public async Task<List<ResumoLavouraAno>> GetResumoAnualLavouraTemporariaAsync(int ano, int idRegiao, int idUf, int idProducao)
         {
             var query = _context.DadosLavouraTemporaria
-                .Where(d => d.Ano == ano);
+                .Where(d => d.Ano == ano && d.Producao.TipoLavoura == TipoLavoura.Temporaria);
 
             if (idUf > 0)
                 query = query.Where(d => d.IdUf == idUf);
@@ -101,7 +101,7 @@ namespace DashboardAgro.Infraestructure.Repositories
         public async Task<List<ResumoLavouraAno>> GetResumoAnualByLavouraAsync(int ano, int idRegiao, int idUf, int idProducao)
         {
             var query = _context.DadosLavouraTemporaria
-                .Where(d => d.Ano == ano && d.IdProducao == idProducao);
+                .Where(d => d.Ano == ano && d.IdProducao == idProducao && d.Producao.TipoLavoura == TipoLavoura.Temporaria);
 
             if (idUf > 0)
                 query = query.Where(d => d.IdUf == idUf);

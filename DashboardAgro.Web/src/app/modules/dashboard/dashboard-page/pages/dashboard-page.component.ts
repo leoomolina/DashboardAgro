@@ -169,7 +169,7 @@ export class DashboardPageComponent implements OnInit {
           this.valorTotalAreaPlantada = FormatUtils.formatarArea(this.resumoAnual.areaPlantadaTotal);
           this.valorTotalDinheiro = FormatUtils.formatarDinheiro(this.resumoAnual.valorProducaoTotal);
           this.valorTotalPeso = FormatUtils.formatarPeso(this.resumoAnual.quantidadeProduzidaTotal);
-          this.totalProdutividade = FormatUtils.formatNumber(this.resumoAnual.produtividade) + 't/ha';
+          this.totalProdutividade = FormatUtils.formatNumber(this.resumoAnual.produtividade) + ' t/ha';
         }
 
         this.resumoPorEstado = resumoPorEstadoData;
