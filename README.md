@@ -5,7 +5,24 @@ Este projeto é um desafio técnico cujo objetivo é **desenvolver uma aplicaç�
 backend e os exiba em um dashboard interativo no frontend**.  
 A solução consome dados públicos do **IBGE (Produção Agrícola Municipal - PAM)**, processa e normaliza os dados via **microsserviços backend**, e os exibe em um **dashboard interativo (frontend)** com foco em **visualização geográfica (mapa)** e **indicadores demográficos**.
 
+
+
 ---
+
+## 📸 Prints do Dashboard
+
+### Dashboard Principal:
+![Dashboard Principal](./docs/images/dashboard-principal.png)
+
+### Filtros Aplicados:
+![Filtros Aplicados](./docs/images/dashboard-filtros.png)
+
+### Visualização no Mapa:
+![Visualização no Mapa](./docs/images/dashboard-mapa.png)
+
+
+---
+
 
 ## 🏗️ Arquitetura
 A arquitetura segue o modelo de **microsserviços containerizados**:
@@ -59,6 +76,18 @@ A arquitetura segue o modelo de **microsserviços containerizados**:
     
 ---
 
+## 📹 Demonstração em Vídeo
+
+👉 [Assista ao vídeo explicativo no YouTube](https://youtu.be/XkHqeGGbezM)
+
+**No vídeo mostro:**
+- Demonstração do dashboard em funcionamento
+- Como funciona a arquitetura do projeto
+- O fluxo de ingestão de dados (importer → banco → API → frontend)
+
+
+---
+
 ## 📊 Fluxo de Dados
 
 1. **DashboardAgro.Importer** → Faz ingestão histórica (1974–2022) uma única vez + sincronização do ano passado e ano corrente (2024+).
@@ -94,7 +123,6 @@ A arquitetura segue o modelo de **microsserviços containerizados**:
   - [x] Buscar detalhes de um ano específico
   - [x] Consultar status da ingestão (anos importados x pendentes)
 - [x] Aplicar normalização dos dados antes de entregar ao front
-- [ ] Configurar versionamento básico (ex.: `/api/v1/...`)
 
 ---
 
@@ -102,10 +130,9 @@ A arquitetura segue o modelo de **microsserviços containerizados**:
 - [x] Criar projeto Angular base
 - [x] Montar layout inicial (header, sidebar, dashboards)
 - [x] Criar tela de **dashboard com gráficos**
-- [ ] Integrar **mapa** com dados agregados
-- [ ] Criar consulta de **status de ingestão** mostrando anos já importados / em importação
+- [x] Integrar **mapa** com dados agregados
 - [x] Integrar chamadas a API
-- [ ] Adicionar loading/spinners para feedback durante consultas
+- [x] Adicionar loading/spinners para feedback durante consultas
 
 ---
 
@@ -113,7 +140,6 @@ A arquitetura segue o modelo de **microsserviços containerizados**:
 - [x] Criar **Dockerfile** para cada microsserviço (`DashboardAgro.Importer`, `DashboardAgro.API`, `front-end`)
 - [x] Criar `docker-compose.yml` para orquestrar **SQL Server + DashboardAgro.Importer + DashboardAgro.API + front**
 - [x] Testar execução local (importação → api → front consumindo)
-- [ ] Publicar imagens no **Docker Hub**
 
 ---
 
@@ -122,5 +148,5 @@ A arquitetura segue o modelo de **microsserviços containerizados**:
 - [x] Listar o que já foi feito (BD, ms-ingestor base, API sem ms-api, front sem telas)
 - [x] Adicionar **to-do list** (esse que estamos montando)
 - [x] Explicar **como rodar o projeto localmente** (`docker compose up`)
-- [ ] Explicar arquitetura do código no backend (camadas, repositórios, controllers)
-- [ ] Incluir prints/telas assim que estiverem prontas
+- [x] Explicar arquitetura do código no backend (camadas, repositórios, controllers)
+- [x] Incluir prints/telas assim que estiverem prontas
